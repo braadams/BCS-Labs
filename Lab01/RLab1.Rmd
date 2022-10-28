@@ -53,7 +53,7 @@ Hints:
 How to check your work: If your loop produced a data frame called "dat.76.clean" and the vectorization approach produced a data frame called `dat.76.clean2`, the `identical(dat.76.clean,dat.76.clean2)` should return `TRUE`.
 
 ```{r filter_missing_age_vectorization}
-
+dat.76.clean2 <- dat.76[-which(is.na(dat.76$Age)),]
 
 ```
 
