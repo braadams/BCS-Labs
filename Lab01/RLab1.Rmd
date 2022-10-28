@@ -32,8 +32,9 @@ dat.76 <- CBdata.1_10[[4]] # Copy index 4 from CBdata (1976)
 ```{r summary}
 summary(dat.76)
 ```
-### The age Median is 32.00 and the age Mean is 32.09 
 
+
+### The age Median is 32.00 and the age Mean is 32.09 
 
 3) You might have noticed that a number of age values are missing (i.e. `NA`). Your next goal is to write a loop that removes observations that don't have age data.  
 Hints:  
@@ -80,6 +81,7 @@ The `IPS_sampledata` data set contains a fraction of the indoor positioning syst
 load("IPS_portion.RData")
 ```
 
+
 ### Variable dictionary
 
 - `time`: timestamp in milliseconds since midnight 01/01/1970 UTC
@@ -102,13 +104,42 @@ load("IPS_portion.RData")
 
 1. First apply the `summary` function to the `IPS_data` to get a sense of what is available in that data frame. 
 
+```{r}
+summary(IPS_sampledata)
+```
+
 2. Identify variables that need any `class` conversion. Attempting to avoid code-replication as much as possible, convert these variables into the correct class type.
+
+```{r}
+varList <- c("time", "posX", "posY", "posZ", "orientation", "signal")
+IPS_sampledata[varList] <- lapply(IPS_sampledata[varList], as.numeric)
+```
 
 3. Because we only want data relative to access points, remove observations that correspond to any other type of device.
 
+```{r}
+IPS_sampledata <- IPS_sampledata[IPS_sampledata$type=="3",]
+IPS_sampledata$type <- NULL
+```
+
+
 4. Assess if there are any variables that provide redundant or no information. If so, remove them from the data frame.
 
+```{r}
+length(unique(IPS_sampledata$scanMAC))  
+length(unique(IPS_sampledata$posZ))     
+IPS_sampledata$scanMac <- NULL
+IPS_sampledata$posZ <- NULL
+```
+
+
 5. Note that the `time` variable is in milliseconds.  Transform it into seconds and then convert its class into a time format using the function `as.POSIXct`.
+
+```{r}
+IPS_sampledata$time <- IPS_sampledata$time/1000 
+
+class(IPS_sampledata$time) <- c("POSIXt", "POSIXct")
+```
 
 
 ### Examining the data more closely
