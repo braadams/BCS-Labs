@@ -1,4 +1,4 @@
-# BCS-Labs
+<h1 align="center">BCS-Labs</h1>
 
 <p align="center">
 <a href="https://github.com/braadams/BCS-Labs" target="_blank">
