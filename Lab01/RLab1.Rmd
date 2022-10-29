@@ -1,11 +1,21 @@
 ---
 title: "R Coding Lab Part 1"
+author: Braxton Adams, Cyrus Cravens, Jonathan Adiri, Sang Xing
 output: rmdformats::html_docco
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
+
+```{css, echo=FALSE}
+h4.author{
+  font-size: 12px;
+  text-align: center;
+  margin-top: -24px;
+}
+```
+
 
 **Complete the following lab as a group. This document should exist in your GitHub repo while you're working on it. Your code should be heavily commented so someone reading your code can follow along easily. See the first code snippet below for an example of commented code.**
 

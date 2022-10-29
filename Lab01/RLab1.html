@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="generator" content="pandoc" />
 
+        <meta name="author" content="Braxton Adams, Cyrus Cravens, Jonathan Adiri, Sang Xing" />
     
     
     <title>R Coding Lab Part 1</title>
@@ -897,13 +898,22 @@ margin-left: 0 !important;
 
    
       <!-- html_docco authors -->
-            
+         <h4 class="author"><em>Braxton Adams, Cyrus Cravens, Jonathan
+Adiri, Sang Xing</em></h4>
+               
       <div id="toc">
      
    </div>
    
 <!-- Don't indent these lines or it will mess pre blocks indentation --> 
 <div id="content">
+<style type="text/css">
+h4.author{
+font-size: 12px;
+text-align: center;
+margin-top: -24px;
+}
+</style>
 <p><strong>Complete the following lab as a group. This document should
 exist in your GitHub repo while you’re working on it. Your code should
 be heavily commented so someone reading your code can follow along
@@ -929,16 +939,57 @@ store it as a data frame called <code>dat.76</code>. Remove the column
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;CBdata.1_10.RData&quot;</span>) <span class="co">#Loading the cherry blossom data. (this is an example of a properly commented line of code)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Now write code to remove the specified column</span></span></code></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Now write code to remove the specified column</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dat<span class="fl">.76</span> <span class="ot">&lt;-</span> CBdata<span class="fl">.1</span>_10[[<span class="dv">4</span>]] <span class="co"># Copy index 4 from CBdata (1976)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dat<span class="fl">.76</span> <span class="ot">&lt;-</span> dat<span class="fl">.76</span>[<span class="sc">-</span><span class="dv">6</span>] <span class="co"># Remove column 6 (Pis/Tis)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat<span class="fl">.76</span>)</span></code></pre></div>
+<pre><code>##       Race                Name Age    Time Pace Division PiD/TiD Hometown Year
+## 1 1976 10M   Carl Hatfield (M)  28 0:49:09 4:55    M2529    1/88       NR 1976
+## 2 1976 10M      Julie Shea (W)  15 0:57:04 5:42    W0119     1/5       NR 1976
+## 3 1976 10M    Jack Mahurin (M)  33 0:49:47 4:59    M3034    1/73       NR 1976
+## 4 1976 10M Aileen O&#39;Connor (W)  15 0:59:51 5:59    W0119     2/5       NR 1976
+## 5 1976 10M     Will Albers (M)  20 0:50:30 5:03    M2024    1/35       NR 1976
+## 6 1976 10M      Lynn Davis (W)  36 1:00:58 6:06    W3539     1/6       NR 1976</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>The function <code>summary()</code> is useful for learning basic
+<li>The function <code>summary()</code> is useful for learning basic
 facts about vectors, data frames, and many other R objects. Use this
-function to find the mean and median recorded ages in 1976.</p></li>
-<li><p>You might have noticed that a number of age values are missing
+function to find the mean and median recorded ages in 1976.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dat<span class="fl">.76</span>) <span class="co"># display summary</span></span></code></pre></div>
+<pre><code>##      Race               Name                Age            Time          
+##  Length:942         Length:942         Min.   : 6.00   Length:942        
+##  Class :character   Class :character   1st Qu.:26.00   Class :character  
+##  Mode  :character   Mode  :character   Median :32.00   Mode  :character  
+##                                        Mean   :32.09                     
+##                                        3rd Qu.:39.00                     
+##                                        Max.   :73.00                     
+##                                        NA&#39;s   :461                       
+##      Pace             Division           PiD/TiD            Hometown        
+##  Length:942         Length:942         Length:942         Length:942        
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##       Year     
+##  Min.   :1976  
+##  1st Qu.:1976  
+##  Median :1976  
+##  Mean   :1976  
+##  3rd Qu.:1976  
+##  Max.   :1976  
+## </code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age mean  : 32.09</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Age median: 32.00</span></span></code></pre></div>
+<div id="the-age-median-is-32.00-and-the-age-mean-is-32.09" class="section level3">
+<h3>The age Median is 32.00 and the age Mean is 32.09</h3>
+<ol start="3" style="list-style-type: decimal">
+<li>You might have noticed that a number of age values are missing
 (i.e. <code>NA</code>). Your next goal is to write a loop that removes
 observations that don’t have age data.<br />
 Hints:<br />
-</p></li>
+</li>
 </ol>
 <ul>
 <li>The <code>is.na()</code> function may be useful. Use the
@@ -953,13 +1004,16 @@ logical vector using <code>!</code>. Ex:
 <code>c(FALSE, FALSE, TRUE)</code>.</li>
 </ul>
 <ol start="4" style="list-style-type: decimal">
-<li><p>Now use vectorization and the <code>is.na()</code> function to
+<li>Now use vectorization and the <code>is.na()</code> function to
 accomplish the same thing as the loop above.<br />
 How to check your work: If your loop produced a data frame called
 “dat.76.clean” and the vectorization approach produced a data frame
 called <code>dat.76.clean2</code>, the
 <code>identical(dat.76.clean,dat.76.clean2)</code> should return
-<code>TRUE</code>.</p></li>
+<code>TRUE</code>.</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dat.<span class="fl">76.</span>clean2 <span class="ot">&lt;-</span> dat<span class="fl">.76</span>[<span class="sc">-</span><span class="fu">which</span>(<span class="fu">is.na</span>(dat<span class="fl">.76</span><span class="sc">$</span>Age)),]</span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
 <li><p>Filtering out missing age data could be useful when dealing with
 other years. With this in mind, turn your filter loop or vectorization
 approach into a function. You should be able to use the function like
@@ -988,14 +1042,15 @@ participant age over the first five years compare to the average age
 over years 6-10?</li>
 </ol>
 </div>
+</div>
 <div id="playing-with-the-indoor-positioning-system-data" class="section level1">
 <h1>Playing with the indoor positioning system data</h1>
 <p>The <code>IPS_sampledata</code> data set contains a fraction of the
 indoor positioning system data for 15 randomly sampled locations.This
 data set is loaded into memory using the chunk of R code below, complete
 the following exercises.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loads data set IPS_sampledata</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;IPS_portion.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loads data set IPS_sampledata</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;IPS_portion.RData&quot;</span>)</span></code></pre></div>
 <div id="variable-dictionary" class="section level3">
 <h3>Variable dictionary</h3>
 <ul>
@@ -1018,60 +1073,167 @@ adhoc mode = 1)</p></li>
 <div id="lets-clean-up-the-data-a-bit" class="section level3">
 <h3>Let’s clean up the data a bit</h3>
 <ol style="list-style-type: decimal">
-<li><p>First apply the <code>summary</code> function to the
+<li>First apply the <code>summary</code> function to the
 <code>IPS_data</code> to get a sense of what is available in that data
-frame.</p></li>
-<li><p>Identify variables that need any <code>class</code> conversion.
-Attempting to avoid code-replication as much as possible, convert these
-variables into the correct class type.</p></li>
-<li><p>Because we only want data relative to access points, remove
-observations that correspond to any other type of device.</p></li>
-<li><p>Assess if there are any variables that provide redundant or no
-information. If so, remove them from the data frame.</p></li>
-<li><p>Note that the <code>time</code> variable is in milliseconds.
-Transform it into seconds and then convert its class into a time format
-using the function <code>as.POSIXct</code>.</p></li>
+frame.</li>
 </ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(IPS_sampledata)</span></code></pre></div>
+<pre><code>##      time             scanMac              posX               posY          
+##  Length:106744      Length:106744      Length:106744      Length:106744     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##      posZ           orientation            mac               signal         
+##  Length:106744      Length:106744      Length:106744      Length:106744     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##    channel              type          
+##  Length:106744      Length:106744     
+##  Class :character   Class :character  
+##  Mode  :character   Mode  :character</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Identify variables that need any <code>class</code> conversion.
+Attempting to avoid code-replication as much as possible, convert these
+variables into the correct class type.</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>colNameList1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;time&quot;</span>, <span class="st">&quot;posX&quot;</span>, <span class="st">&quot;posY&quot;</span>, <span class="st">&quot;posZ&quot;</span>, <span class="st">&quot;orientation&quot;</span>, <span class="st">&quot;signal&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>IPS_sampledata[colNameList1] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(IPS_sampledata[colNameList1], as.numeric)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>colNameList2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;mac&quot;</span>, <span class="st">&quot;channel&quot;</span>, <span class="st">&quot;scanMac&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>IPS_sampledata[colNameList2] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(IPS_sampledata[colNameList2], as.factor)</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Because we only want data relative to access points, remove
+observations that correspond to any other type of device.</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>IPS_sampledata <span class="ot">&lt;-</span> IPS_sampledata[IPS_sampledata<span class="sc">$</span>type<span class="sc">==</span><span class="st">&quot;3&quot;</span>,]</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Assess if there are any variables that provide redundant or no
+information. If so, remove them from the data frame.</li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(IPS_sampledata<span class="sc">$</span>scanMac))  </span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(IPS_sampledata<span class="sc">$</span>posZ))     </span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>IPS_sampledata<span class="sc">$</span>scanMac <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>IPS_sampledata<span class="sc">$</span>posZ <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>IPS_sampledata <span class="ot">&lt;-</span> IPS_sampledata[ <span class="sc">!</span><span class="fu">sapply</span>(IPS_sampledata, is.null)]</span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Note that the <code>time</code> variable is in milliseconds.
+Transform it into seconds and then convert its class into a time format
+using the function <code>as.POSIXct</code>.</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>IPS_sampledata<span class="sc">$</span>time <span class="ot">&lt;-</span> IPS_sampledata<span class="sc">$</span>time<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>IPS_sampledata<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(IPS_sampledata<span class="sc">$</span>time, <span class="at">tz=</span><span class="st">&quot;UTC&quot;</span>, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)</span></code></pre></div>
 </div>
 <div id="examining-the-data-more-closely" class="section level3">
 <h3>Examining the data more closely</h3>
 <ol style="list-style-type: decimal">
-<li><p>Create the function <code>tally_mac</code> whose only input is
-the MAC address of an access point, and returns the number of
-observations found in the data set for it.</p></li>
-<li><p>Use the function <code>unique</code> to identify the unique
-levels for <code>mac</code> found in the data set.</p></li>
-<li><p>Using an approach learned in class together with
+<li>Create the function <code>tally_mac</code> whose only input is the
+MAC address of an access point, and returns the number of observations
+found in the data set for it.</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tally_mac <span class="ot">&lt;-</span> <span class="cf">function</span>(mac){</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">length</span>(mac))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tally_mac</span>(IPS_sampledata<span class="sc">$</span>mac)</span></code></pre></div>
+<pre><code>## [1] 88831</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Use the function <code>unique</code> to identify the unique levels
+for <code>mac</code> found in the data set.</li>
+</ol>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">length</span>(<span class="fu">unique</span>(IPS_sampledata<span class="sc">$</span>mac)))</span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using an approach learned in class together with
 <code>tally_mac</code>, tally the number of observations for all access
 points in the data. While the researchers did their best to clean their
 data, some noise was introduced by access points on other floors. Based
 on the number of counts, identify and remove likely suspects for access
-points read by mistake.</p></li>
-<li><p>The orientation of the hand-held device considered was supposed
-to be exactly set to the 8 angles from 0-315 in increments of 45 degrees
+points read by mistake.</li>
+</ol>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">summary</span>(IPS_sampledata<span class="sc">$</span>mac), <span class="at">decreasing =</span> <span class="cn">TRUE</span>,)</span></code></pre></div>
+<pre><code>## 00:0f:a3:39:e1:c0 00:0f:a3:39:dd:cd 00:14:bf:b1:97:8a 00:14:bf:3b:c7:c6 
+##             13184             13165             12017             11788 
+## 00:14:bf:b1:97:90 00:14:bf:b1:97:81 00:14:bf:b1:97:8d 00:0f:a3:39:e0:4b 
+##             11082             10962             10856              4414 
+## 00:0f:a3:39:e2:10 00:30:bd:f8:7f:c5 00:04:0e:5c:23:fc 02:00:42:55:31:00 
+##              1201               113                49                 0 
+## 02:2e:58:22:f1:ac 02:37:fd:3b:54:b5 02:5c:e0:50:49:de 02:64:fb:68:52:e6 
+##                 0                 0                 0                 0</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the 7 WAPs that has above 10k obs</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>IPS_sampledata <span class="ot">&lt;-</span> IPS_sampledata[IPS_sampledata<span class="sc">$</span>mac <span class="sc">%in%</span> <span class="fu">names</span>(<span class="fu">sort</span>(<span class="fu">summary</span>(IPS_sampledata<span class="sc">$</span>mac), <span class="at">decreasing =</span> <span class="cn">TRUE</span>,))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>],]</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>The orientation of the hand-held device considered was supposed to
+be exactly set to the 8 angles from 0-360 in increments of 45 degrees
 (360 is equivalent to 0). However, in practice the measured orientations
 were close to the 8 expected but had some error, so we’ll need to group
 them. Develop and apply a function to recode the orientation values as
 one of 0, 45, 90, 135, 180, 225, 270, 315. Call the recoded orientation
-variable <code>rec_orient</code>.</p></li>
-<li><p>Create the function <code>signal_summary</code> that takes as
-inputs a location (<code>posX</code>, <code>posY</code>,
-<code>posZ</code>), an orientation (<code>rec_orient</code>) and an
-access point id (<code>mac</code>). The function must identify and
-subset the rows in <code>IPS_sampledata</code> corresponding to this
-unique combination, then it must calculate and return the mean and
-standard deviation for the corresponding signal strengths.</p></li>
-<li><p>Create a list where each entry corresponds to a named list
-including unique combination of a location, an orientation, and an
-access point. Use this list in combination with <code>lapply</code> and
+variable <code>rec_orient</code>.</li>
+</ol>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>rec_orient <span class="ot">&lt;-</span> <span class="cf">function</span>(orientation) {</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  angles <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">360</span>, <span class="at">by=</span><span class="dv">45</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">=</span> <span class="fu">sapply</span>(orientation, <span class="cf">function</span>(index) <span class="fu">which.min</span>(<span class="fu">abs</span>(index<span class="sc">-</span>angles)))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if (orientation &gt;= 0){</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   q = sapply(orientation, function(index) which.min(abs(index-angles)))</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># } else{</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   q = sapply(orientation, function(index) 10-which.min(abs(angles+index)))</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># }</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  directions_index <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">1</span>)[q]</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  directions <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;E→&quot;</span>, <span class="st">&quot;NE↗&quot;</span>, <span class="st">&quot;N↑&quot;</span>, <span class="st">&quot;NW↖&quot;</span>, <span class="st">&quot;W←&quot;</span>, <span class="st">&quot;SW↙&quot;</span>, <span class="st">&quot;S↓&quot;</span>, <span class="st">&quot;SE↘&quot;</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  directions[directions_index]</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># angles = paste(angles, directions, sep = &#39;=&#39;) concatenate angles with directions</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>IPS_sampledata<span class="sc">$</span>orientation <span class="ot">&lt;-</span> <span class="fu">rec_orient</span>(IPS_sampledata<span class="sc">$</span>orientation)</span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Create the function <code>signal_summary</code> that takes as inputs
+a location (<code>posX</code>, <code>posY</code>, <code>posZ</code>), an
+orientation (<code>rec_orient</code>) and an access point id
+(<code>mac</code>). The function must identify and subset the rows in
+<code>IPS_sampledata</code> corresponding to this unique combination,
+then it must calculate and return the mean and standard deviation for
+the corresponding signal strengths.</li>
+</ol>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>signal_summary <span class="ot">&lt;-</span> <span class="cf">function</span> (unique_Combo) {</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  signal_stat <span class="ot">=</span> unique_Combo[, <span class="fu">c</span>(<span class="st">&#39;posX&#39;</span>, <span class="st">&#39;posY&#39;</span>, <span class="st">&#39;orientation&#39;</span>, <span class="st">&#39;mac&#39;</span>) ]</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  signal_stat<span class="sc">$</span>avgSignal <span class="ot">=</span> <span class="fu">mean</span>(unique_Combo<span class="sc">$</span>signal)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  signal_stat<span class="sc">$</span>sdSignal <span class="ot">=</span> <span class="fu">sd</span>(unique_Combo<span class="sc">$</span>signal)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  signal_stat</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">signal_summary</span>(IPS_sampledata))</span></code></pre></div>
+<pre><code>##       posX            posY        orientation                       mac       
+##  Min.   : 1.00   Min.   : 0.000   Length:83054       00:0f:a3:39:e1:c0:13184  
+##  1st Qu.: 2.00   1st Qu.: 3.000   Class :character   00:0f:a3:39:dd:cd:13165  
+##  Median :11.00   Median : 4.000   Mode  :character   00:14:bf:b1:97:8a:12017  
+##  Mean   :13.29   Mean   : 5.519                      00:14:bf:3b:c7:c6:11788  
+##  3rd Qu.:22.00   3rd Qu.: 8.000                      00:14:bf:b1:97:90:11082  
+##  Max.   :32.00   Max.   :13.000                      00:14:bf:b1:97:81:10962  
+##                                                      (Other)          :10856  
+##    avgSignal        sdSignal    
+##  Min.   :-60.1   Min.   :11.06  
+##  1st Qu.:-60.1   1st Qu.:11.06  
+##  Median :-60.1   Median :11.06  
+##  Mean   :-60.1   Mean   :11.06  
+##  3rd Qu.:-60.1   3rd Qu.:11.06  
+##  Max.   :-60.1   Max.   :11.06  
+## </code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Create a list where each entry corresponds to a named list including
+unique combination of a location, an orientation, and an access point.
+Use this list in combination with <code>lapply</code> and
 <code>signal_summary</code> to generate a summary of signals for each
 unique combination. <code>Hint</code>: you may want to create a new
 variable with a unique identifier that combines location,
 <code>rec_orient</code> and <code>mac</code> to make your life simpler.
 One way to go about this is using the <code>paste</code> function (see
 <code>?paste</code> for help on its use) with these variables in a
-row-by-row fashion.</p></li>
+row-by-row fashion.</li>
 </ol>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>IPS_sampledata<span class="sc">$</span>posXY <span class="ot">&lt;-</span> <span class="fu">paste</span>(IPS_sampledata<span class="sc">$</span>posX, IPS_sampledata<span class="sc">$</span>posY, <span class="at">sep=</span><span class="st">&quot;-&quot;</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>Combo <span class="ot">&lt;-</span> <span class="fu">list</span>(IPS_sampledata<span class="sc">$</span>posXY, IPS_sampledata<span class="sc">$</span>orientation, IPS_sampledata<span class="sc">$</span>mac)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>Full_Combo <span class="ot">&lt;-</span> <span class="fu">with</span>(IPS_sampledata, <span class="fu">by</span>(IPS_sampledata, Combo, <span class="cf">function</span>(x) x))</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>IPS_sampledata_Stat <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Full_Combo, signal_summary)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># IPS_sampledata_Stat &lt;- do.call(&quot;rbind&quot;, signalSummary)</span></span></code></pre></div>
 </div>
 </div>
 </div>
