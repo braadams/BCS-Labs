@@ -19,6 +19,7 @@
  ┃ ┣ 📜RLab1.html
  ┃ ┗ 📜RLab1.Rmd
  ┣ 📜.gitignore
+ ┣ 📜BCS-Labs.Rproj
  ┣ 📜Logo.png
  ┗ 📜README.md
 ```
