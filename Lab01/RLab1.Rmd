@@ -254,30 +254,37 @@ head(IPS_sampledata) # Display the first six entries
 Create the function `signal_summary` that takes as inputs a location (`posX`, `posY`, `posZ`), an orientation (`rec_orient`) and an access point id (`mac`).  The function must identify and subset the rows in `IPS_sampledata` corresponding to this unique combination, then it must calculate and return the mean and standard deviation for the corresponding signal strengths. 
 
 ```{r}
-signal_summary <- function (posX, posY, orientation, mac) {
-  signal_stat = IPS_sampledata[IPS_sampledata$posX==posX &
-                               IPS_sampledata$posY==posY &
-                               IPS_sampledata$orientation==orientation &
-                               IPS_sampledata$mac==mac,]
-  signal_stat$avgSignal <- mean(signal_stat$signal)
-  signal_stat$sdSignal <- sd(signal_stat$signal)
-  signal_stat
+signal_summary <- function (dat, posX, posY, orientation, mac) {
+  signal_stat = dat[dat$posX==posX &
+                               dat$posY==posY &
+                               dat$orientation==orientation &
+                               dat$mac==mac,]
+  list(
+    mean = mean(signal_stat$signal),
+    sd = sd(signal_stat$signal)
+  )
 }
 
-head(signal_summary(1, 9, "E→",	"00:14:bf:b1:97:8a"))
+head(signal_summary(IPS_sampledata, 1, 9, "E→",	"00:14:bf:b1:97:8a"))
 ```
 
 ## 6
 Create a list where each entry corresponds to a named list including unique combination of a location, an orientation, and an access point.  Use this list in combination with `lapply` and `signal_summary` to generate a summary of signals for each unique combination. `Hint`: you may want to create a new variable with a unique identifier that combines location, `rec_orient` and `mac` to make your life simpler.  One way to go about this is using the `paste` function (see `?paste` for help on its use) with these variables in a row-by-row fashion.
 
 ```{r}
-IPS_sampledata$ <- paste(IPS_sampledata$posX, IPS_sampledata$posY, IPS_sampledata$orientation,  IPS_sampledata$mac, sep="||")
-Combo <-  list(IPS_sampledata$posXY, IPS_sampledata$orientation, IPS_sampledata$mac)
-Appended_Signal_Stat <- with(IPS_sampledata, by(IPS_sampledata, Combo, function(do_nothing) do_nothing))
-Appended_Signal_Stat <- Appended_Signal_Stat[!sapply(Appended_Signal_Stat, is.null)]
-Appended_Signal_Stat <- lapply(Appended_Signal_Stat, signal_summary)
-IPS_sampledata_Stat <- do.call("rbind", Appended_Signal_Stat)
-head(IPS_sampledata_Stat)
+IPS_sampledata$uniqueID <- paste(IPS_sampledata$posX, IPS_sampledata$posY, IPS_sampledata$orientation,  IPS_sampledata$mac, sep="|")
+
+filter_data <- function(id) {
+  dat <- IPS_sampledata[IPS_sampledata$uniqueID == id,]
+  entry.1 <- dat[1,]
+  signal_summary(dat, entry.1$posX, entry.1$posY, entry.1$orientation, entry.1$mac)
+}
+
+IDs <- unique(IPS_sampledata$uniqueID)
+
+full.summary <- lapply(IDs, filter_data)
+names(full.summary) <- IDs
+head(full.summary)
 ```
 
 
