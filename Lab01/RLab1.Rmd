@@ -89,10 +89,10 @@ Hints:
 - Depending on how you write your code, you may need to negate a logical vector using `!`. Ex: `!c(TRUE, TRUE, FALSE)` is identical to `c(FALSE, FALSE, TRUE)`.
 
 ```{r filter_missing_age_loop}
-dat.76.clean <- NULL
-for(x in 1:nrow(dat.76)) {
-  if(!is.na(dat.76[x, "Age"])) {
-    dat.76.clean <- rbind(dat.76.clean, dat.76[x,])
+dat.76.clean <- NULL       #Creating new empty variable to store the cleaned data
+for(x in 1:nrow(dat.76)) { #Creating a loop that will go from one to the number of rows (942)
+  if(!is.na(dat.76[x, "Age"])) { #checking if the current row is not an NA
+    dat.76.clean <- rbind(dat.76.clean, dat.76[x,]) #Appending the new variable with the non NA row.
   }
 }
 ```
