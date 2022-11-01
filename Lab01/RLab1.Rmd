@@ -113,10 +113,10 @@ When you have a function written, run it on the 1976 data and use identical() to
 
 ```{r filter_func}
 filter.func <- function(dat){  
-  dat[-which(is.na(dat$Age)),]
+  dat[-which(is.na(dat$Age)),] # If the observation has a NA Age, drop it from the dataframe
 }
 
-dat.76.clean3 <- filter.func(dat.76)
+dat.76.clean3 <- filter.func(dat.76) # Run function on our dataframe
 
 identical(dat.76.clean,dat.76.clean3)
 ```
@@ -126,23 +126,20 @@ Next, write a loop that combines all of the data from `CBdata.1_10` into one cle
 Use the `identical()` function to verify that the 1976 data in this larger cleaned data set is the same as the cleaned version of `dat.76`. 
 
 ```{r combine_dat}
-CBdata.1_10df <- NULL
-for (i in CBdata.1_10){
- CBdata.1_10df <- rbind(CBdata.1_10df,i)
+CBdata.1_10df <- NULL # Create name for the combined dataframe 
+for (i in CBdata.1_10){ 
+ CBdata.1_10df <- rbind(CBdata.1_10df,i) # Bind each dataframe in the list by rows
 }
 
-CBdata.1_10_clean <- CBdata.1_10df[-6]
-CBdata.1_10_clean <- filter.func(CBdata.1_10_clean)
+CBdata.1_10_clean <- CBdata.1_10df[-6] # Drop Pis/Tis column
+CBdata.1_10_clean <- filter.func(CBdata.1_10_clean) # Drop NA Age observations
 
+dat.76.clean4 <- CBdata.1_10_clean[CBdata.1_10_clean$Year==1976,] # filter only 1976 data to verify it matches the previous chunks
 
-
-dat.76.clean4 <- CBdata.1_10_clean[CBdata.1_10_clean$Year==1976,] 
-
-rownames(dat.76.clean) <- NULL
+rownames(dat.76.clean) <- NULL # Drop row names (otherwise the indicies won't match!)
 rownames(dat.76.clean4) <- NULL
 
 identical(dat.76.clean4,dat.76.clean)
-
 ```
 
 ## 7
