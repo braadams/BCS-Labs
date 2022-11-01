@@ -25,6 +25,6 @@
 ```
 <p align="right">
 <a href="https://github.com/braadams/BCS-Labs" target="_blank">
-<img src="https://img.shields.io/badge/Updated%20on-10/29/22-blue"/>
+<img src="https://img.shields.io/github/last-commit/braadams/BCS-Labs?label=Last%20commit"/>
 </a>
 </p>
