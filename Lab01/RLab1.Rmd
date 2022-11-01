@@ -154,7 +154,16 @@ b) Recall that the `CBdata.1_10` contains the first ten year's worth of cherry b
 mean(dat.76.clean$Age)
 mean(CBdata.1_10_clean$Age)
 
-mean(CBdata.1_10_clean$Year])
+firstfive <- CBdata.1_10_clean[CBdata.1_10_clean$Year%in%1973:1977,]
+
+mean(firstfive$Age)
+
+secondfive <- CBdata.1_10_clean[CBdata.1_10_clean$Year%in%1978:1982,]
+mean(secondfive$Age)
+
+# a) The average of the recorded ages in 1976 compared to that same average over the entire `CBdata.1_10` data set has increased by more than a year.
+
+# b) The average participant age over the first five years compared to the average age over years 6-10 has increased by more than a year.
 ```
 
 
