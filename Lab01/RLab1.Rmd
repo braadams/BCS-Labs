@@ -207,7 +207,7 @@ Create the function `tally_mac` whose only input is the MAC address of an access
 
 ```{r}
 tally_mac <- function(mac_obs){
-  print(table(IPS_sampledata$mac==mac_obs)[["TRUE"]])
+  print(table(IPS_sampledata$mac==mac_obs)[["TRUE"]]) # Count the number of entries that match mac_obs and return the value
 }
 
 tally_mac("00:0f:a3:39:dd:cd")
@@ -217,16 +217,16 @@ tally_mac("00:0f:a3:39:dd:cd")
 Use the function `unique` to identify the unique levels for `mac` found in the data set.
 
 ```{r}
-print(length(unique(IPS_sampledata$mac)))
+print(length(unique(IPS_sampledata$mac))) # 
 ```
 
 ## 3
 Using an approach learned in class together with `tally_mac`, tally the  number of observations for all access points in the data. While the researchers did their best to clean their data, some noise was introduced by access points on other floors.  Based on the number of counts, identify and remove likely suspects for access points read by mistake.
 
 ```{r}
-sort(summary(IPS_sampledata$mac), decreasing = TRUE,)
+sort(summary(IPS_sampledata$mac), decreasing = TRUE,) # Tally the IPS_sample mac addresses and sort in decreasing order
 # Take the top 7 APs with counts over 10k obs
-IPS_sampledata <- IPS_sampledata[IPS_sampledata$mac %in% names(sort(summary(IPS_sampledata$mac), decreasing = TRUE,))[1:7],]
+IPS_sampledata <- IPS_sampledata[IPS_sampledata$mac %in% names(sort(summary(IPS_sampledata$mac), decreasing = TRUE,))[1:7],] # Using the above summary, only include mac addresses that are in the 7 largest counts
 ```
 
 ## 4
@@ -234,21 +234,21 @@ The orientation of the hand-held device considered was supposed to be exactly se
 
 ```{r}
 rec_orient <- function(orientation) {
-  angles = seq(from=0, to=360, by=45)
-  q = sapply(orientation, function(index) which.min(abs(index-angles)))
+  angles = seq(from=0, to=360, by=45) # Generate a list of the orientation values
+  q = sapply(orientation, function(index) which.min(abs(index-angles))) # Given a list of orientations, return the orientation angle that is closest for each item
   # if (orientation >= 0){
   #   q = sapply(orientation, function(index) which.min(abs(index-angles)))
   # } else{
   #   q = sapply(orientation, function(index) 10-which.min(abs(angles+index)))
   # }
-  directions_index <- c(1:8, 1)[q]
-  directions = c("E→", "NE↗", "N↑", "NW↖", "W←", "SW↙", "S↓", "SE↘")
-  directions[directions_index]
+  directions_index <- c(1:8, 1)[q] # Convert q to an item from 1-8, where 1 is E, 2 is NE, etc
+  directions = c("E→", "NE↗", "N↑", "NW↖", "W←", "SW↙", "S↓", "SE↘") # "pretty print" versions of the orientation list
+  directions[directions_index] # Convert directions_input to the "pretty print" versions
   # angles = paste(angles, directions, sep = '=') concatenate angles with directions
 }
 
-IPS_sampledata$orientation <- rec_orient(IPS_sampledata$orientation)
-head(IPS_sampledata)
+IPS_sampledata$orientation <- rec_orient(IPS_sampledata$orientation) # Apply function from above to orientation data
+head(IPS_sampledata) # Display the first six entries
 ```
 
 ## 5
