@@ -104,7 +104,7 @@ How to check your work: If your loop produced a data frame called "dat.76.clean"
 ```{r filter_missing_age_vectorization}
 dat.76.clean2 <- dat.76[-which(is.na(dat.76$Age)),] # Find the indices of the Age entries that are NAs and drop them from the data frame
 
-identical(dat.76.clean, dat.76.clean2)
+identical(dat.76.clean, dat.76.clean2) 
 ```
 
 ## 5
@@ -112,7 +112,13 @@ Filtering out missing age data could be useful when dealing with other years. Wi
 When you have a function written, run it on the 1976 data and use identical() to verify that your function and the first loop you wrote are doing the same thing.
 
 ```{r filter_func}
+filter.func <- function(dat){  
+  dat[-which(is.na(dat$Age)),]
+}
 
+dat.76.clean3 <- filter.func(dat.76)
+
+identical(dat.76.clean,dat.76.clean3)
 ```
 
 ## 6
@@ -120,6 +126,15 @@ Next, write a loop that combines all of the data from `CBdata.1_10` into one cle
 Use the `identical()` function to verify that the 1976 data in this larger cleaned data set is the same as the cleaned version of `dat.76`. 
 
 ```{r combine_dat}
+CBdata.1_10df <- NULL
+for (i in CBdata.1_10){
+ CBdata.1_10df <- rbind(CBdata.1_10df,i)
+}
+
+CBdata.1_10_clean <- CBdata.1_10df[-6]
+CBdata.1_10_clean <- filter.func(CBdata.1_10_clean)
+
+identical(CBdata.1_10_clean[CBdata.1_10_clean$Year==1976,],dat.76.clean)
 
 ```
 
