@@ -1808,7 +1808,7 @@ adhoc mode = 1)</p></li>
 <p>First apply the <code>summary</code> function to the
 <code>IPS_data</code> to get a sense of what is available in that data
 frame.</p>
-<pre class="r"><code>summary(IPS_sampledata)</code></pre>
+<pre class="r"><code>summary(IPS_sampledata) # Summary of IPS data frame</code></pre>
 <pre><code>##      time             scanMac              posX               posY               posZ           orientation       
 ##  Length:106744      Length:106744      Length:106744      Length:106744      Length:106744      Length:106744     
 ##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
@@ -1823,36 +1823,36 @@ frame.</p>
 <p>Identify variables that need any <code>class</code> conversion.
 Attempting to avoid code-replication as much as possible, convert these
 variables into the correct class type.</p>
-<pre class="r"><code>colNameList1 &lt;- c(&quot;time&quot;, &quot;posX&quot;, &quot;posY&quot;, &quot;posZ&quot;, &quot;orientation&quot;, &quot;signal&quot;)
-IPS_sampledata[colNameList1] &lt;- lapply(IPS_sampledata[colNameList1], as.numeric)
-colNameList2 &lt;- c(&quot;mac&quot;, &quot;channel&quot;, &quot;scanMac&quot;)
-IPS_sampledata[colNameList2] &lt;- lapply(IPS_sampledata[colNameList2], as.factor)</code></pre>
+<pre class="r"><code>colNameList1 &lt;- c(&quot;time&quot;, &quot;posX&quot;, &quot;posY&quot;, &quot;posZ&quot;, &quot;orientation&quot;, &quot;signal&quot;) # List of numeric variables
+IPS_sampledata[colNameList1] &lt;- lapply(IPS_sampledata[colNameList1], as.numeric) # Convert these variables to numeric
+colNameList2 &lt;- c(&quot;mac&quot;, &quot;channel&quot;, &quot;scanMac&quot;) # List of factor variables
+IPS_sampledata[colNameList2] &lt;- lapply(IPS_sampledata[colNameList2], as.factor) # Convert these variables to factors</code></pre>
 </div>
 <div id="section-9" class="section level2">
 <h2>3</h2>
 <p>Because we only want data relative to access points, remove
 observations that correspond to any other type of device.</p>
-<pre class="r"><code>IPS_sampledata &lt;- IPS_sampledata[IPS_sampledata$type==&quot;3&quot;,]</code></pre>
+<pre class="r"><code>IPS_sampledata &lt;- IPS_sampledata[IPS_sampledata$type==&quot;3&quot;,] # Filter only access point observations</code></pre>
 </div>
 <div id="section-10" class="section level2">
 <h2>4</h2>
 <p>Assess if there are any variables that provide redundant or no
 information. If so, remove them from the data frame.</p>
-<pre class="r"><code>length(unique(IPS_sampledata$scanMac))  </code></pre>
+<pre class="r"><code>length(unique(IPS_sampledata$scanMac)) # Are there more than one unique values for scanMac and posZ?</code></pre>
 <pre><code>## [1] 1</code></pre>
-<pre class="r"><code>length(unique(IPS_sampledata$posZ))     </code></pre>
+<pre class="r"><code>length(unique(IPS_sampledata$posZ))</code></pre>
 <pre><code>## [1] 1</code></pre>
-<pre class="r"><code>IPS_sampledata$scanMac &lt;- NULL
+<pre class="r"><code>IPS_sampledata$scanMac &lt;- NULL # Set these two variables to NULL
 IPS_sampledata$posZ &lt;- NULL
-IPS_sampledata &lt;- IPS_sampledata[ !sapply(IPS_sampledata, is.null)]</code></pre>
+IPS_sampledata &lt;- IPS_sampledata[!sapply(IPS_sampledata, is.null)] # If a variable is NULL, remove them</code></pre>
 </div>
 <div id="section-11" class="section level2">
 <h2>5</h2>
 <p>Note that the <code>time</code> variable is in milliseconds.
 Transform it into seconds and then convert its class into a time format
 using the function <code>as.POSIXct</code>.</p>
-<pre class="r"><code>IPS_sampledata$time &lt;- IPS_sampledata$time/1000
-IPS_sampledata$time &lt;- as.POSIXct(IPS_sampledata$time, tz=&quot;UTC&quot;, origin = &quot;1970-01-01&quot;)</code></pre>
+<pre class="r"><code>IPS_sampledata$time &lt;- IPS_sampledata$time/1000 # Convert time from milliseconds to seconds
+IPS_sampledata$time &lt;- as.POSIXct(IPS_sampledata$time, tz=&quot;UTC&quot;, origin = &quot;1970-01-01&quot;) # Convert to time format</code></pre>
 </div>
 <div id="examining-the-data-more-closely" class="section level2">
 <h2>Examining the data more closely</h2>
@@ -1862,12 +1862,12 @@ IPS_sampledata$time &lt;- as.POSIXct(IPS_sampledata$time, tz=&quot;UTC&quot;, or
 <p>Create the function <code>tally_mac</code> whose only input is the
 MAC address of an access point, and returns the number of observations
 found in the data set for it.</p>
-<pre class="r"><code>tally_mac &lt;- function(mac){
-  print(length(mac))
+<pre class="r"><code>tally_mac &lt;- function(mac_obs){
+  print(table(IPS_sampledata$mac==mac_obs)[[&quot;TRUE&quot;]])
 }
 
-tally_mac(IPS_sampledata$mac)</code></pre>
-<pre><code>## [1] 88831</code></pre>
+tally_mac(&quot;00:0f:a3:39:dd:cd&quot;)</code></pre>
+<pre><code>## [1] 13165</code></pre>
 </div>
 <div id="section-13" class="section level2">
 <h2>2</h2>

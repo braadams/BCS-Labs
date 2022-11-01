@@ -201,11 +201,11 @@ IPS_sampledata$time <- as.POSIXct(IPS_sampledata$time, tz="UTC", origin = "1970-
 Create the function `tally_mac` whose only input is the MAC address of an access point, and returns the number of observations found in the data set for it.
 
 ```{r}
-tally_mac <- function(mac){
-  print(length(mac))
+tally_mac <- function(mac_obs){
+  print(table(IPS_sampledata$mac==mac_obs)[["TRUE"]])
 }
 
-tally_mac(IPS_sampledata$mac)
+tally_mac("00:0f:a3:39:dd:cd")
 ```
 
 ## 2
