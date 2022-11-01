@@ -148,15 +148,14 @@ a) How does the average of the recorded ages in 1976 compare to that same averag
 b) Recall that the `CBdata.1_10` contains the first ten year's worth of cherry blossom race data. How does the average participant age over the first five years compare to the average age over years 6-10?
 
 ```{r}
-mean(dat.76.clean$Age)
-mean(CBdata.1_10_clean$Age)
+mean(dat.76.clean$Age) # Mean across 1976: 32.09356
+mean(CBdata.1_10_clean$Age) # Mean across all ten years: 33.26157
 
-firstfive <- CBdata.1_10_clean[CBdata.1_10_clean$Year%in%1973:1977,]
+firstfive <- CBdata.1_10_clean[CBdata.1_10_clean$Year%in%1973:1977,] # Select first five years
+mean(firstfive$Age) # Mean across first ten years: 31.11927
 
-mean(firstfive$Age)
-
-secondfive <- CBdata.1_10_clean[CBdata.1_10_clean$Year%in%1978:1982,]
-mean(secondfive$Age)
+secondfive <- CBdata.1_10_clean[CBdata.1_10_clean$Year%in%1978:1982,] # Select second five years
+mean(secondfive$Age) # Mean across second ten years: 33.69101
 
 # a) The average of the recorded ages in 1976 compared to that same average over the entire `CBdata.1_10` data set has increased by more than a year.
 
