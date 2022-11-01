@@ -156,43 +156,43 @@ Let's clean up the data a bit!
 First apply the `summary` function to the `IPS_data` to get a sense of what is available in that data frame. 
 
 ```{r}
-summary(IPS_sampledata)
+summary(IPS_sampledata) # Summary of IPS data frame
 ```
 
 ## 2
 Identify variables that need any `class` conversion. Attempting to avoid code-replication as much as possible, convert these variables into the correct class type.
 
 ```{r}
-colNameList1 <- c("time", "posX", "posY", "posZ", "orientation", "signal")
-IPS_sampledata[colNameList1] <- lapply(IPS_sampledata[colNameList1], as.numeric)
-colNameList2 <- c("mac", "channel", "scanMac")
-IPS_sampledata[colNameList2] <- lapply(IPS_sampledata[colNameList2], as.factor)
+colNameList1 <- c("time", "posX", "posY", "posZ", "orientation", "signal") # List of numeric variables
+IPS_sampledata[colNameList1] <- lapply(IPS_sampledata[colNameList1], as.numeric) # Convert these variables to numeric
+colNameList2 <- c("mac", "channel", "scanMac") # List of factor variables
+IPS_sampledata[colNameList2] <- lapply(IPS_sampledata[colNameList2], as.factor) # Convert these variables to factors
 ```
 
 ## 3
 Because we only want data relative to access points, remove observations that correspond to any other type of device.
 
 ```{r}
-IPS_sampledata <- IPS_sampledata[IPS_sampledata$type=="3",]
+IPS_sampledata <- IPS_sampledata[IPS_sampledata$type=="3",] # Filter only access point observations
 ```
 
 ## 4
 Assess if there are any variables that provide redundant or no information. If so, remove them from the data frame.
 
 ```{r}
-length(unique(IPS_sampledata$scanMac))  
-length(unique(IPS_sampledata$posZ))     
-IPS_sampledata$scanMac <- NULL
+length(unique(IPS_sampledata$scanMac)) # Are there more than one unique values for scanMac and posZ?
+length(unique(IPS_sampledata$posZ))
+IPS_sampledata$scanMac <- NULL # Set these two variables to NULL
 IPS_sampledata$posZ <- NULL
-IPS_sampledata <- IPS_sampledata[ !sapply(IPS_sampledata, is.null)]
+IPS_sampledata <- IPS_sampledata[!sapply(IPS_sampledata, is.null)] # If a variable is NULL, remove them
 ```
 
 ## 5
 Note that the `time` variable is in milliseconds.  Transform it into seconds and then convert its class into a time format using the function `as.POSIXct`.
 
 ```{r}
-IPS_sampledata$time <- IPS_sampledata$time/1000
-IPS_sampledata$time <- as.POSIXct(IPS_sampledata$time, tz="UTC", origin = "1970-01-01")
+IPS_sampledata$time <- IPS_sampledata$time/1000 # Convert time from milliseconds to seconds
+IPS_sampledata$time <- as.POSIXct(IPS_sampledata$time, tz="UTC", origin = "1970-01-01") # Convert to time format
 ```
 
 ## Examining the data more closely
