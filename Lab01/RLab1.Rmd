@@ -80,7 +80,7 @@ summary(dat.76) # display summary
 # Age mean  : 32.09
 # Age median: 32.00
 ```
-**ANs:** The age Median is 32.00 and the age Mean is 32.09 
+**ANS:** The age Median is 32.00 and the age Mean is 32.09 
 
 ## 3
 You might have noticed that a number of age values are missing (i.e. `NA`). Your next goal is to write a loop that removes observations that don't have age data.  
@@ -89,8 +89,12 @@ Hints:
 - Depending on how you write your code, you may need to negate a logical vector using `!`. Ex: `!c(TRUE, TRUE, FALSE)` is identical to `c(FALSE, FALSE, TRUE)`.
 
 ```{r filter_missing_age_loop}
-
-
+dat.76.clean <- NULL
+for(x in 1:nrow(dat.76)) {
+  if(!is.na(dat.76[x, "Age"])) {
+    dat.76.clean <- rbind(dat.76.clean, dat.76[x,])
+  }
+}
 ```
 
 ## 4
@@ -98,8 +102,9 @@ Now use vectorization and the `is.na()` function to accomplish the same thing as
 How to check your work: If your loop produced a data frame called "dat.76.clean" and the vectorization approach produced a data frame called `dat.76.clean2`, the `identical(dat.76.clean,dat.76.clean2)` should return `TRUE`.
 
 ```{r filter_missing_age_vectorization}
-dat.76.clean2 <- dat.76[-which(is.na(dat.76$Age)),]
+dat.76.clean2 <- dat.76[-which(is.na(dat.76$Age)),] # Find the indices of the Age entries that are NAs and drop them from the data frame
 
+identical(dat.76.clean, dat.76.clean2)
 ```
 
 ## 5
