@@ -134,7 +134,14 @@ for (i in CBdata.1_10){
 CBdata.1_10_clean <- CBdata.1_10df[-6]
 CBdata.1_10_clean <- filter.func(CBdata.1_10_clean)
 
-identical(CBdata.1_10_clean[CBdata.1_10_clean$Year==1976,],dat.76.clean)
+
+
+dat.76.clean4 <- CBdata.1_10_clean[CBdata.1_10_clean$Year==1976,] 
+
+rownames(dat.76.clean) <- NULL
+rownames(dat.76.clean4) <- NULL
+
+identical(dat.76.clean4,dat.76.clean)
 
 ```
 
@@ -142,6 +149,14 @@ identical(CBdata.1_10_clean[CBdata.1_10_clean$Year==1976,],dat.76.clean)
 Now that you have the combined data set for these 10 years, let's do some basic exploration:  
 a) How does the average of the recorded ages in 1976 compare to that same average over the entire `CBdata.1_10` data set?  
 b) Recall that the `CBdata.1_10` contains the first ten year's worth of cherry blossom race data. How does the average participant age over the first five years compare to the average age over years 6-10?
+
+```{r}
+mean(dat.76.clean$Age)
+mean(CBdata.1_10_clean$Age)
+
+mean(CBdata.1_10_clean$Year])
+```
+
 
 # Playing with the indoor positioning system data
 
