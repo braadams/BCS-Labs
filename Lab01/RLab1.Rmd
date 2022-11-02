@@ -289,14 +289,15 @@ head(IPS_sampledata) # Display the first six entries
 Create the function `signal_summary` that takes as inputs a location (`posX`, `posY`, `posZ`), an orientation (`rec_orient`) and an access point id (`mac`).  The function must identify and subset the rows in `IPS_sampledata` corresponding to this unique combination, then it must calculate and return the mean and standard deviation for the corresponding signal strengths. 
 
 ```{r}
-signal_summary <- function (dat, posX, posY, orientation, mac) {
-  signal_stat = dat[dat$posX==posX &
+signal_summary <- function (dat, posX, posY, orientation, mac) {      #Input data
+  # data to be evaluated (posZ was filtered out because it was redundant so is not included)
+  signal_stat = dat[dat$posX==posX & 
                                dat$posY==posY &
                                dat$orientation==orientation &
                                dat$mac==mac,]
   list(
-    mean = mean(signal_stat$signal),
-    sd = sd(signal_stat$signal)
+    mean = mean(signal_stat$signal), # subsets the mean of signal based on the conditions passed to signal_stat
+    sd = sd(signal_stat$signal)  # subsets the standard deviation of signal based on conditions passed to signal_stat
   )
 }
 
@@ -307,19 +308,20 @@ head(signal_summary(IPS_sampledata, 1, 9, "E→",	"00:14:bf:b1:97:8a"))
 Create a list where each entry corresponds to a named list including unique combination of a location, an orientation, and an access point.  Use this list in combination with `lapply` and `signal_summary` to generate a summary of signals for each unique combination. `Hint`: you may want to create a new variable with a unique identifier that combines location, `rec_orient` and `mac` to make your life simpler.  One way to go about this is using the `paste` function (see `?paste` for help on its use) with these variables in a row-by-row fashion.
 
 ```{r}
-IPS_sampledata$uniqueID <- paste(IPS_sampledata$posX, IPS_sampledata$posY, IPS_sampledata$orientation,  IPS_sampledata$mac, sep="|")
+# creates new variable that combines elements from posX, posY, orientation, and mac that is seperated by |
+IPS_sampledata$uniqueID <- paste(IPS_sampledata$posX, IPS_sampledata$posY, IPS_sampledata$orientation,  IPS_sampledata$mac, sep="|") 
 
-filter_data <- function(id) {
-  dat <- IPS_sampledata[IPS_sampledata$uniqueID == id,]
-  entry.1 <- dat[1,]
-  signal_summary(dat, entry.1$posX, entry.1$posY, entry.1$orientation, entry.1$mac)
+filter_data <- function(id) { # function to find distinct ids
+  dat <- IPS_sampledata[IPS_sampledata$uniqueID == id,] # filtering distinct id's in `uniqueID`
+  entry.1 <- dat[1,] #takes the first line of the df to filter for unique ids
+  signal_summary(dat, entry.1$posX, entry.1$posY, entry.1$orientation, entry.1$mac) # finds the mean and standard deviation 
 }
 
-IDs <- unique(IPS_sampledata$uniqueID)
+IDs <- unique(IPS_sampledata$uniqueID) # creates new variable for distinct uniqueID's
 
-full.summary <- lapply(IDs, filter_data)
-names(full.summary) <- IDs
-head(full.summary)
+full.summary <- lapply(IDs, filter_data) # creates a list from ID's and filtered_data
+names(full.summary) <- IDs # sets names to match IDs
+head(full.summary) # displays first 6 of the list
 ```
 
 
