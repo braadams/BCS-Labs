@@ -96,39 +96,38 @@ Use the `identical()` function to verify that the 1976 data in this larger clean
 
 ```{r combine_dat}
 CBdata.1_10 %>%
-  bind_rows()%>%
-  select(-`PiS/TiS`) %>%
-  filter(!is.na(Age)) -> CBdata.1_10_clean
+  bind_rows() %>%        # Bind all of the dataframes into one large data frame
+  select(-`PiS/TiS`) %>% # Drop `PiS/TiS` column
+  filter(!is.na(Age)) -> # Remove observations with NA Ages
+  CBdata.1_10_clean
 
 CBdata.1_10_clean %>% 
-  filter(Year==1976) %>% 
-  identical(dat.76)
-  
+  filter(Year==1976) %>% # Filter only 1976 race data
+  identical(dat.76)      # Is it identical to the cleaned data?
 ```
 
 5) Now that you have the combined data set for these 10 years, let's compare some basic results to what you found last week. Use piping and `dplyr` functions in your computations.  
 a) Calculate the average of the recorded ages in 1976 and that same average over the entire `CBdata.1_10` data set, and make sure these numbers match the ones you found in Lab 1.
 
 ```{r}
+CBdata.1_10_clean %>% 
+  filter(Year==1976) %>%   # Filter Races from 1976
+  summarise(n(),mean(Age)) # Get mean ages: 32.09356
 
 CBdata.1_10_clean %>% 
-  filter(Year==1976) %>% 
-  summarise(n(),mean(Age))
-
-CBdata.1_10_clean %>% 
-  summarise(n(),mean(Age))
+  summarise(n(),mean(Age)) # Get mean ages for entire data set: 33.26157
 ```
 
 b) Recall that the `CBdata.1_10` contains the first ten year's worth of cherry blossom race data. Compute the average participant age over the first five years and the average age over years 6-10, and make sure these numbers match the ones you found in Lab 1.  
 
 ```{r}
 CBdata.1_10_clean %>% 
-  filter(Year%in%1973:1977) %>% 
-  summarise(mean(Age))
+  filter(Year %in% 1973:1977) %>% # Filter Races between 1973-1977
+  summarise(mean(Age))            # Get mean age: 31.11927
 
 CBdata.1_10_clean %>% 
-  filter(Year%in%1978:1982) %>% 
-  summarise(mean(Age))
+  filter(Year %in% 1978:1982) %>% # Filter Races between 1978-1982
+  summarise(mean(Age))            # Get mean age: 33.69101
 
 ```
 
@@ -153,6 +152,7 @@ c) Use a `join` function to add a date column to your cherry blossom data frame.
 ```{r}
 
 ```
+
 
 d) Use a `join` function to add precipitation `PRCP`  and minimum daily temperature `TMIN` columns to your cherry blossom data set.
 
