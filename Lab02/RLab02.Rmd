@@ -65,17 +65,18 @@ load("CBdata.1_10.RData") #Loading the cherry blossom data. (this is an example 
 
 #Now write code to remove the specified column
 
-dat.76 <- CBdata.1_10[[4]]
+dat.76 <- CBdata.1_10[[4]] # Select the fourth dataframe from the data set (1976)
 
-dat.76 %>%  select(-`PiS/TiS`) -> dat.76
-head(dat.76)
+dat.76 %>% select(-`PiS/TiS`) -> dat.76 # Drop `PiS/TiS` column
+head(dat.76) # Show first six entries
 ```
 
 
 2) Use the `summarise()` function to find the mean and median recorded ages in 1976. 
 
 ```{r summary}
-dat.76 %>% summarise(n(), mean(Age), median(Age))
+dat.76 %>% summarise(n(), mean(Age), median(Age)) # Attempt to get summary information (mean and median)
+# Note that it outputs NA; we have NA values that messes with mean and median.
 ```
 
 
@@ -83,9 +84,10 @@ dat.76 %>% summarise(n(), mean(Age), median(Age))
 
 
 ```{r remove_missing_age}
-
-dat.76 %>% filter(!is.na(Age)) -> dat.76 
-dat.76 %>% summarise(n(), mean(Age), median(Age))
+dat.76 %>% filter(!is.na(Age)) -> dat.76 # Drop observations with NA Age
+dat.76 %>% summarise(n(), mean(Age), median(Age)) # Second attempt to get summary information
+# Mean: 32.09356
+# Median: 32
 ```
 
 
