@@ -8,7 +8,7 @@
         <meta name="author" content="Braxton Adams, Cyrus Cravens, Jonathan Adiri, Sang Xing" />
     
     
-    <title>R Coding Lab Part 1</title>
+    <title>R Coding Lab Part 2</title>
 
         <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1593,7 +1593,7 @@ margin-left: 0 !important;
    </div>
    
         
-      <h1 class="title">R Coding Lab Part 1</h1>
+      <h1 class="title">R Coding Lab Part 2</h1>
          <h1 class="subtitle">STAT-4/510: Basic Consulting SKills</h1>
    
       <p class="authors">
@@ -1667,14 +1667,40 @@ store it as a data frame called <code>dat.76</code>. Remove the column
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>load(&quot;CBdata.1_10.RData&quot;) #Loading the cherry blossom data. (this is an example of a properly commented line of code)
 
-#Now write code to remove the specified column</code></pre>
+#Now write code to remove the specified column
+
+dat.76 &lt;- CBdata.1_10[[4]] # Select the fourth dataframe from the data set (1976)
+
+dat.76 %&gt;% select(-`PiS/TiS`) -&gt; dat.76 # Drop `PiS/TiS` column
+head(dat.76) # Show first six entries</code></pre>
+<pre><code>##       Race                Name Age    Time Pace Division PiD/TiD Hometown Year
+## 1 1976 10M   Carl Hatfield (M)  28 0:49:09 4:55    M2529    1/88       NR 1976
+## 2 1976 10M      Julie Shea (W)  15 0:57:04 5:42    W0119     1/5       NR 1976
+## 3 1976 10M    Jack Mahurin (M)  33 0:49:47 4:59    M3034    1/73       NR 1976
+## 4 1976 10M Aileen O&#39;Connor (W)  15 0:59:51 5:59    W0119     2/5       NR 1976
+## 5 1976 10M     Will Albers (M)  20 0:50:30 5:03    M2024    1/35       NR 1976
+## 6 1976 10M      Lynn Davis (W)  36 1:00:58 6:06    W3539     1/6       NR 1976</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Use the <code>summarise()</code> function to find the mean and
-median recorded ages in 1976.</p></li>
-<li><p>You might have noticed that a number of age values are missing
+<li>Use the <code>summarise()</code> function to find the mean and
+median recorded ages in 1976.</li>
+</ol>
+<pre class="r"><code>dat.76 %&gt;% summarise(n(), mean(Age), median(Age)) # Attempt to get summary information (mean and median)</code></pre>
+<pre><code>##   n() mean(Age) median(Age)
+## 1 942        NA          NA</code></pre>
+<pre class="r"><code># Note that it outputs NA; we have NA values that messes with mean and median.</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>You might have noticed that a number of age values are missing
 (i.e. <code>NA</code>). Your next goal is to use <code>dplyr</code> to
-remove the data with missing age. This should not be a loop!</p></li>
-<li><p>Last week you wrote a loop to combine all of the data from
+remove the data with missing age. This should not be a loop!</li>
+</ol>
+<pre class="r"><code>dat.76 %&gt;% filter(!is.na(Age)) -&gt; dat.76 # Drop observations with NA Age
+dat.76 %&gt;% summarise(n(), mean(Age), median(Age)) # Second attempt to get summary information</code></pre>
+<pre><code>##   n() mean(Age) median(Age)
+## 1 481  32.09356          32</code></pre>
+<pre class="r"><code># Mean: 32.09356
+# Median: 32</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Last week you wrote a loop to combine all of the data from
 <code>CBdata.1_10</code> into one cleaned data frame. Use the function
 <code>bind_rows()</code> from <code>dplyr</code> to accomplish this same
 task. use the <code>?</code> command to look up documentation on
@@ -1683,23 +1709,55 @@ Make sure your final data frame has neither the <code>Pis/Tis</code>
 column nor <code>NA</code> Age values.<br />
 Use the <code>identical()</code> function to verify that the 1976 data
 in this larger cleaned data set is the same as the cleaned version of
-<code>dat.76</code>.</p></li>
-<li><p>Now that you have the combined data set for these 10 years, let’s
+<code>dat.76</code>.</li>
+</ol>
+<pre class="r"><code>CBdata.1_10 %&gt;%
+  bind_rows() %&gt;%        # Bind all of the dataframes into one large data frame
+  select(-`PiS/TiS`) %&gt;% # Drop `PiS/TiS` column
+  filter(!is.na(Age)) -&gt; # Remove observations with NA Ages
+  CBdata.1_10_clean
+
+CBdata.1_10_clean %&gt;% 
+  filter(Year==1976) %&gt;% # Filter only 1976 race data
+  identical(dat.76)      # Is it identical to the cleaned data?</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Now that you have the combined data set for these 10 years, let’s
 compare some basic results to what you found last week. Use piping and
 <code>dplyr</code> functions in your computations.<br />
-</p></li>
+</li>
 </ol>
 <ol style="list-style-type: lower-alpha">
 <li>Calculate the average of the recorded ages in 1976 and that same
 average over the entire <code>CBdata.1_10</code> data set, and make sure
-these numbers match the ones you found in Lab 1.<br />
-</li>
+these numbers match the ones you found in Lab 1.</li>
+</ol>
+<pre class="r"><code>CBdata.1_10_clean %&gt;% 
+  filter(Year==1976) %&gt;%   # Filter Races from 1976
+  summarise(n(),mean(Age)) # Get mean ages: 32.09356</code></pre>
+<pre><code>##   n() mean(Age)
+## 1 481  32.09356</code></pre>
+<pre class="r"><code>CBdata.1_10_clean %&gt;% 
+  summarise(n(),mean(Age)) # Get mean ages for entire data set: 33.26157</code></pre>
+<pre><code>##     n() mean(Age)
+## 1 15816  33.26157</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
 <li>Recall that the <code>CBdata.1_10</code> contains the first ten
 year’s worth of cherry blossom race data. Compute the average
 participant age over the first five years and the average age over years
 6-10, and make sure these numbers match the ones you found in Lab
 1.</li>
 </ol>
+<pre class="r"><code>CBdata.1_10_clean %&gt;% 
+  filter(Year %in% 1973:1977) %&gt;% # Filter Races between 1973-1977
+  summarise(mean(Age))            # Get mean age: 31.11927</code></pre>
+<pre><code>##   mean(Age)
+## 1  31.11927</code></pre>
+<pre class="r"><code>CBdata.1_10_clean %&gt;% 
+  filter(Year %in% 1978:1982) %&gt;% # Filter Races between 1978-1982
+  summarise(mean(Age))            # Get mean age: 33.69101</code></pre>
+<pre><code>##   mean(Age)
+## 1  33.69101</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Let’s now incorporate weather data into our cherry blossom data set.
 We will be dealing with multiple data sources, so this is a perfect
@@ -1710,17 +1768,57 @@ oppritunity to practice <code>join</code> skills…</li>
 data. This is raw data recorded by a weather station in the Washington
 DC area. This particular data set contains daily summaries of various
 weather measurements.</li>
+</ol>
+<pre class="r"><code>library(readr)
+read_csv(&#39;weatherdat.csv&#39;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+## e.g.:
+##   dat &lt;- vroom(...)
+##   problems(dat)</code></pre>
+<pre><code>## Rows: 3317 Columns: 33
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (3): STATION, NAME, PGTM
+## dbl  (24): ACMH, ACSH, PRCP, PSUN, SNOW, SNWD, TMAX, TMIN, TSUN, WDFG, WDFM,...
+## lgl   (5): TAVG, WDF1, WSF1, WT07, WT14
+## date  (1): DATE
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 3,317 × 33
+##    STATION     NAME   DATE        ACMH  ACSH PGTM   PRCP  PSUN  SNOW  SNWD TAVG 
+##    &lt;chr&gt;       &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;
+##  1 USW00013743 WASHI… 1973-04-01   100   100 1906   0.5      6     0     0 NA   
+##  2 USW00013743 WASHI… 1973-04-02    80    90 1824   0       17     0     0 NA   
+##  3 USW00013743 WASHI… 1973-04-03    60    60 1536   0       57     0     0 NA   
+##  4 USW00013743 WASHI… 1973-04-04    70    90 2224   0.88    27     0     0 NA   
+##  5 USW00013743 WASHI… 1973-04-05    50    70 1324   0       35     0     0 NA   
+##  6 USW00013743 WASHI… 1973-04-06     0     0 1354   0      100     0     0 NA   
+##  7 USW00013743 WASHI… 1973-04-07    70    90 2354   0.2     46     0     0 NA   
+##  8 USW00013743 WASHI… 1973-04-08    90   100 0936   0.39     1     0     0 NA   
+##  9 USW00013743 WASHI… 1973-04-09    40    30 1718   0       82     0     0 NA   
+## 10 USW00013743 WASHI… 1973-04-10    70    80 1748   0.2     36     0     0 NA   
+## # … with 3,307 more rows, and 22 more variables: TMAX &lt;dbl&gt;, TMIN &lt;dbl&gt;,
+## #   TSUN &lt;dbl&gt;, WDF1 &lt;lgl&gt;, WDFG &lt;dbl&gt;, WDFM &lt;dbl&gt;, WESD &lt;dbl&gt;, WSF1 &lt;lgl&gt;,
+## #   WSFG &lt;dbl&gt;, WSFM &lt;dbl&gt;, WT01 &lt;dbl&gt;, WT02 &lt;dbl&gt;, WT03 &lt;dbl&gt;, WT04 &lt;dbl&gt;,
+## #   WT05 &lt;dbl&gt;, WT06 &lt;dbl&gt;, WT07 &lt;lgl&gt;, WT08 &lt;dbl&gt;, WT09 &lt;dbl&gt;, WT14 &lt;lgl&gt;,
+## #   WT16 &lt;dbl&gt;, WT18 &lt;dbl&gt;</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
 <li>Open the <code>Rite_of_Spring_1973_2020-1.pdf</code> document, and
 record the dates of the first 10 races. Store this information in a
 vector or data frame.</li>
-<li>Use a <code>join</code> function to add a date column to your cherry
-blossom data frame. Hints: (i) the <code>paste()</code> and
+</ol>
+<pre class="r"><code>c(&quot;1973-04-01&quot;,&quot;1974-03-31&quot;,&quot;1975-04-06&quot;,&quot;1976-04-04&quot;,&quot;1977-04-03&quot;,&quot;1977-04-03&quot;,&quot;1978-04-02&quot;,&quot;1979-04-01&quot;,&quot;1980-03-30&quot;,&quot;1981-04-05&quot;,&quot;1982-04-04&quot;,&quot;1983-03-27&quot;)%&gt;% 
+  as.Date() -&gt; ros_dates</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><p>Use a <code>join</code> function to add a date column to your
+cherry blossom data frame. Hints: (i) the <code>paste()</code> and
 <code>paste0</code> functions are useful for creating charecter vectors
 (ii) it would be useful for these dates to have the same format as those
-found in the weather data set…</li>
-<li>Use a <code>join</code> function to add precipitation
+found in the weather data set…</p></li>
+<li><p>Use a <code>join</code> function to add precipitation
 <code>PRCP</code> and minimum daily temperature <code>TMIN</code>
-columns to your cherry blossom data set.</li>
+columns to your cherry blossom data set.</p></li>
 </ol>
 </div>
 <div id="playing-with-the-indoor-positioning-system-data" class="section level1">
@@ -1803,7 +1901,8 @@ Set this data set aside and use the long format data for the rest of the
 assignment</li>
 </ol>
 <pre class="r"><code>IPS_sampledata %&gt;% 
-  tidyr::pivot_wider(names_from=mac, values_from=signal, values_fn = list)</code></pre>
+  distinct() %&gt;%
+  tidyr::pivot_wider(., names_from=mac, values_from=signal, values_fn=list)</code></pre>
 <pre><code>## # A tibble: 80,312 × 17
 ##    time                 posX  posY orien…¹ channel type  00:14…² 00:0f…³ 00:14…⁴
 ##    &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;list&gt;  &lt;list&gt;  &lt;list&gt; 
@@ -1848,11 +1947,7 @@ the rows in <code>IPS_sampledata</code> corresponding to this unique
 combination, then calculated and returned the mean and standard
 deviation for the corresponding signal strengths. You then used
 <code>lapply</code> to compute mean and standard deviation values for
-all combinations of location, orientation, and access point ID. Use
-piping,<code>summarise()</code>, and other <code>dplyr</code> functions
-to run this same computation without the use of loops or
-<code>lapply</code>. Compare your results with those from last week to
-confirm you’re doing the right thing!</p></li>
+all combinations of location, orientation, and access point ID.</p></li>
 </ol>
 </div>
 </div>
