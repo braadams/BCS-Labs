@@ -75,7 +75,7 @@ head(dat.76)
 2) Use the `summarise()` function to find the mean and median recorded ages in 1976. 
 
 ```{r summary}
-
+dat.76 %>% summarise(n(), mean(Age), median(Age))
 ```
 
 
@@ -84,7 +84,8 @@ head(dat.76)
 
 ```{r remove_missing_age}
 
-
+dat.76 %>% filter(!is.na(Age)) -> dat.76 
+dat.76 %>% summarise(n(), mean(Age), median(Age))
 ```
 
 
