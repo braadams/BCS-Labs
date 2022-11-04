@@ -93,7 +93,15 @@ dat.76 %>% summarise(n(), mean(Age), median(Age))
 Use the `identical()` function to verify that the 1976 data in this larger cleaned data set is the same as the cleaned version of `dat.76`. 
 
 ```{r combine_dat}
+CBdata.1_10 %>%
+  bind_rows()%>%
+  select(-`PiS/TiS`) %>%
+  filter(!is.na(Age)) -> CBdata.1_10_clean
 
+CBdata.1_10_clean %>% 
+  filter(Year==1976) %>% 
+  identical(dat.76)
+  
 ```
 
 5) Now that you have the combined data set for these 10 years, let's compare some basic results to what you found last week. Use piping and `dplyr` functions in your computations.  
