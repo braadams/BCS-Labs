@@ -18,6 +18,13 @@
  ┃ ┣ 📜IPS_portion.RData
  ┃ ┣ 📜RLab1.html
  ┃ ┗ 📜RLab1.Rmd
+ ┣ 📂Lab02
+ ┃ ┣ 📜CBdata.1_10.RData
+ ┃ ┣ 📜IPS_portion.RData
+ ┃ ┣ 📜Rite_of_Spring_1973_2020-1.pdf
+ ┃ ┣ 📜RLab02.html
+ ┃ ┣ 📜RLab02.Rmd
+ ┃ ┗ 📜weatherdat.csv
  ┣ 📜.gitignore
  ┣ 📜BCS-Labs.Rproj
  ┣ 📜Logo.png
