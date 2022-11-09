@@ -137,26 +137,32 @@ a) use `readr()` to import the `weatherdat.csv` data. This is raw data recorded 
 
 ```{r}
 library(readr)
-read_csv('weatherdat.csv')
+weather <- read_csv('weatherdat.csv')
+head(weather)
 ```
 
 b) Open the `Rite_of_Spring_1973_2020-1.pdf` document, and record the dates of the first 10 races. Store this information in a vector or data frame.
 
 ```{r}
-c("1973-04-01","1974-03-31","1975-04-06","1976-04-04","1977-04-03","1977-04-03","1978-04-02","1979-04-01","1980-03-30","1981-04-05","1982-04-04","1983-03-27")%>% 
-  as.Date() -> ros_dates
+c("1973-04-01","1974-03-31","1975-04-06","1976-04-04","1977-04-03","1978-04-02","1979-04-01","1980-03-30","1981-04-05","1982-04-04","1983-03-27") %>% # Manually create list of race dats from .pdf
+  as.Date() -> ros_dates # Convert to date format
 ```
 
-c) Use a `join` function to add a date column to your cherry blossom data frame. Hints: (i) the `paste()` and `paste0` functions are useful for creating charecter vectors (ii) it would be useful for these dates to have the same format as those found in the weather data set...
+c) Use a `join` function to add a date column to your cherry blossom data frame. Hints: (i) the `paste()` and `paste0` functions are useful for creating character vectors (ii) it would be useful for these dates to have the same format as those found in the weather data set...
 
 ```{r}
-
+data.frame(Year = 1973:1983,Date = ros_dates) -> dfdates # Create a data frame that includes the year and the date for the join
+full_join(CBdata.1_10_clean,dfdates) -> CBdata.1_10_clean_dates # Join by year
 ```
 
 
 d) Use a `join` function to add precipitation `PRCP`  and minimum daily temperature `TMIN` columns to your cherry blossom data set.
 
-
+```{r}
+weather_dat <- select(weather,DATE,PRCP,TMIN) # Select only the DATE, PRCP, and TMIN variables
+left_join(CBdata.1_10_clean_dates,weather_dat,b = c("Date" = "DATE")) -> full_data
+head(full_data)
+```
 
 
 # Playing with the indoor positioning system data
