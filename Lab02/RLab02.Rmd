@@ -1,6 +1,6 @@
 ---
 title: "R Coding Lab Part 2"
-subtitle: "STAT-4/510: Basic Consulting SKills "
+subtitle: "STAT-4/510: Basic Consulting Skills "
 author: Braxton Adams, Cyrus Cravens, Jonathan Adiri, Sang Xing
 output: 
   rmdformats::downcute:
