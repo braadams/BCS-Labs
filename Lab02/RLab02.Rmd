@@ -250,7 +250,7 @@ IPS_sampledata %>% select(orientation) %>% distinct() %>% order(decreasing = T)
 
 ```{r}
 library(dplyr)
-IPS_sampledata %>% group_by(mac) %>% tally() 
+IPS_sampledata %>% group_by(mac) %>% tally() #Tally number of obs in mac column
 ```
 
 2. While the researchers did their best to clean their data, some noise was introduced by access points on other floors.  Based on the number of counts, identify and remove likely suspects for access points read by mistake, again using `dplyr` functions.
@@ -263,7 +263,7 @@ IPS_sampledata <- filter(IPS_sampledata,
                             "00:14:bf:b1:97:81", 
                             "00:14:bf:b1:97:8a", 
                             "00:14:bf:b1:97:8d", 
-                            "00:14:bf:b1:97:90"))
+                            "00:14:bf:b1:97:90")) #Take the top 7 APs with over 10k obs counts from Lab-1
 IPS_sampledata
 ```
 
