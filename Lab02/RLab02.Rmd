@@ -227,10 +227,7 @@ IPS_sampledata %>%
 
 ### Examining the data more closely
 
-```{r}
-load("IPS_portion.RData")
-IPS_sampledata
-```
+
 ```{r}
 IPS_sampledata %>% select(orientation) %>% distinct() %>% order(decreasing = T)
 ```
@@ -242,6 +239,7 @@ IPS_sampledata %>% select(orientation) %>% distinct() %>% order(decreasing = T)
 library(dplyr)
 IPS_sampledata %>% group_by(mac) %>% tally() 
 ```
+
 
 2. While the researchers did their best to clean their data, some noise was introduced by access points on other floors.  Based on the number of counts, identify and remove likely suspects for access points read by mistake, again using `dplyr` functions.
 
@@ -260,8 +258,8 @@ IPS_sampledata
 3.  The orientation of the hand-held device considered was supposed to be exactly set to the 8 angles from 0-315 in increments of 45 degrees (360 is equivalent to 0). However, in practice the measured orientations were close to the 8 expected but had some error.  Use the `case_when` function to recode the orientation values as one of 0, 45, 90, 135, 180, 225, 270, 315. Call the recoded orientation variable `rec_orient`.
 
 ```{r}
-IPS_sampledata <- IPS_sampledata %>% 
-  mutate(rec_orient = case_when(orientation >= 0.0 & orientation < 1.0 ~ 0, 
+IPS_sampledata <- IPS_sampledata %>% na.omit() %>% 
+  mutate(rec_orient = case_when(orientation >= 0.0 & orientation < 1.0 ~ 0, # sets the left and right boundaries
                                 orientation >= 44.0 & orientation < 50.0 ~ 45,
                                 orientation >= 90.0 & orientation < 91.0 ~ 90,
                                 orientation >= 134.0 & orientation  < 138.0 ~ 135,
@@ -277,8 +275,8 @@ IPS_sampledata
 4. Last week you created the function `signal_summary` that takes as inputs a location (`posX`, `posY`, `posZ`), an orientation (`rec_orient`) and an access point id (`mac`).  The function identified and subset the rows in `IPS_sampledata` corresponding to this unique combination, then calculated and returned the mean and standard deviation for the corresponding signal strengths. You then used `lapply` to compute mean and standard deviation values for all combinations of location, orientation, and access point ID. 
 
 ```{r}
-# IPS_sampledata %>% select(posX, posY, posZ, rec_orient, mac) %>% na.omit() %>% summarise_all(mean)
-
-#
-  
+ 
+IPS_sampledata %>% na.omit() %>%  # removing na values
+  group_by(posX, posY, rec_orient, mac) %>%  # grouping by desired variables
+  summarise(mean(signal), sd(signal)) # creating mean and standard deviation by group
 ```
