@@ -162,7 +162,7 @@ d) Use a `join` function to add precipitation `PRCP`  and minimum daily temperat
 ```{r}
 weather_dat <- select(weather,DATE,PRCP,TMIN)
 
-left_join(CBdata.1_10_clean_dates,weather_dat,b = c("Date" = "DATE")) -> full_data
+left_join(CBdata.1_10_clean_dates,weather_dat,by = c("Date" = "DATE")) -> full_data
 
 head(full_data)
 ```
