@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "R Coding Lab Part 2"
 subtitle: "STAT-4/510: Basic Consulting SKills "
@@ -279,4 +280,299 @@ IPS_sampledata
 IPS_sampledata %>% na.omit() %>%  # removing na values
   group_by(posX, posY, rec_orient, mac) %>%  # grouping by desired variables
   summarise(mean(signal), sd(signal)) # creating mean and standard deviation by group
+```
+=======
+---
+title: "R Coding Lab Part 2"
+subtitle: "STAT-4/510: Basic Consulting SKills "
+author: Braxton Adams, Cyrus Cravens, Jonathan Adiri, Sang Xing
+output: 
+  rmdformats::downcute:
+    highlight: tango
+    code_folding: show  
+    default_style: "dark"
+    toc_depth: 3
+df_print: kable   
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo=FALSE}
+.title, .subtitle, .authors{
+  text-align: center;
+}
+
+.glyphicon{
+  display: none;
+}
+
+h1.subtitle {
+    font-size: 1rem;
+    font-weight: 100;
+}
+
+[data-theme='dark']
+.page-content .code-mask, .page-content pre{
+  background-color: #4d619657;
+}
+
+.page-content code{
+  background: #4d619657;
+  color: #fff;
+}
+
+[data-theme='light']
+.page-content .code-mask, .page-content pre{
+  background-color: #292c34;
+}
+
+.page-content code{
+  background: #292c34;
+  color: #fff;
+}
+```
+
+**Complete the following lab as a group. This document should exist in your GitHub repo while you're working on it. Your code should be heavily commented so someone reading your code can follow along easily. See the first code snippet below for an example of commented code.**
+
+**Here's the catch: For any given problem, the person writing the code should not be the person commenting that code, and every person must both code AND comment at least one problem in this lab (you decide how to split the work). This will involve lots of pushing and pulling through Git, and you may have to resolve conflicts if you're not careful! Refer to last Thursday's class notes for details on conflict resolution.**
+
+# Playing With Cherry Blossom Race Data
+
+1) First load the data, which is saved as a .RData file called `CBdata.1_10.RData`. This is the first ten years' worth of Cherry Blossom Race data. Pull out the data associated with 1976 and store it as a data frame called `dat.76`. Remove the column `Pis/Tis` using a `dplyr` function. 
+
+
+```{r import_data}
+library(dplyr)
+load("CBdata.1_10.RData") #Loading the cherry blossom data. (this is an example of a properly commented line of code)
+
+#Now write code to remove the specified column
+
+dat.76 <- CBdata.1_10[[4]] # Select the fourth dataframe from the data set (1976)
+
+dat.76 %>% select(-`PiS/TiS`) -> dat.76 # Drop `PiS/TiS` column
+head(dat.76) # Show first six entries
+```
+
+
+2) Use the `summarise()` function to find the mean and median recorded ages in 1976. 
+
+```{r summary}
+dat.76 %>% summarise(n(), mean(Age), median(Age)) # Attempt to get summary information (mean and median)
+# Note that it outputs NA; we have NA values that messes with mean and median.
+```
+
+
+3) You might have noticed that a number of age values are missing (i.e. `NA`). Your next goal is to use `dplyr` to remove the data with missing age. This should not be a loop!  
+
+
+```{r remove_missing_age}
+dat.76 %>% filter(!is.na(Age)) -> dat.76 # Drop observations with NA Age
+dat.76 %>% summarise(n(), mean(Age), median(Age)) # Second attempt to get summary information
+# Mean: 32.09356
+# Median: 32
+```
+
+
+4) Last week you wrote a loop to combine all of the data from `CBdata.1_10` into one cleaned data frame. Use the function `bind_rows()` from `dplyr` to accomplish this same task. use the `?` command to look up documentation on functions you're not familar with like this: `?bind_rows`. Make sure your final data frame has neither the `Pis/Tis` column nor `NA` Age values.  
+Use the `identical()` function to verify that the 1976 data in this larger cleaned data set is the same as the cleaned version of `dat.76`. 
+
+```{r combine_dat}
+CBdata.1_10 %>%
+  bind_rows() %>%        # Bind all of the dataframes into one large data frame
+  select(-`PiS/TiS`) %>% # Drop `PiS/TiS` column
+  filter(!is.na(Age)) -> # Remove observations with NA Ages
+  CBdata.1_10_clean
+
+CBdata.1_10_clean %>% 
+  filter(Year==1976) %>% # Filter only 1976 race data
+  identical(dat.76)      # Is it identical to the cleaned data?
+```
+
+5) Now that you have the combined data set for these 10 years, let's compare some basic results to what you found last week. Use piping and `dplyr` functions in your computations.  
+a) Calculate the average of the recorded ages in 1976 and that same average over the entire `CBdata.1_10` data set, and make sure these numbers match the ones you found in Lab 1.
+
+```{r}
+CBdata.1_10_clean %>% 
+  filter(Year==1976) %>%   # Filter Races from 1976
+  summarise(n(),mean(Age)) # Get mean ages: 32.09356
+
+CBdata.1_10_clean %>% 
+  summarise(n(),mean(Age)) # Get mean ages for entire data set: 33.26157
+```
+
+b) Recall that the `CBdata.1_10` contains the first ten year's worth of cherry blossom race data. Compute the average participant age over the first five years and the average age over years 6-10, and make sure these numbers match the ones you found in Lab 1.  
+
+```{r}
+CBdata.1_10_clean %>% 
+  filter(Year %in% 1973:1977) %>% # Filter Races between 1973-1977
+  summarise(mean(Age))            # Get mean age: 31.11927
+
+CBdata.1_10_clean %>% 
+  filter(Year %in% 1978:1982) %>% # Filter Races between 1978-1982
+  summarise(mean(Age))            # Get mean age: 33.69101
+
+```
+
+
+6) Let's now incorporate weather data into our cherry blossom data set. We will be dealing with multiple data sources, so this is a perfect oppritunity to practice `join` skills...
+a) use `readr()` to import the `weatherdat.csv` data. This is raw data recorded by a weather station in the Washington DC area. This particular data set contains daily summaries of various weather measurements. 
+
+```{r}
+library(readr)
+weather <- read_csv('weatherdat.csv')
+head(weather)
+```
+
+b) Open the `Rite_of_Spring_1973_2020-1.pdf` document, and record the dates of the first 10 races. Store this information in a vector or data frame.
+
+```{r}
+c("1973-04-01","1974-03-31","1975-04-06","1976-04-04","1977-04-03","1978-04-02","1979-04-01","1980-03-30","1981-04-05","1982-04-04","1983-03-27") %>% # Manually create list of race dats from .pdf
+  as.Date() -> ros_dates # Convert to date format
+```
+
+c) Use a `join` function to add a date column to your cherry blossom data frame. Hints: (i) the `paste()` and `paste0` functions are useful for creating character vectors (ii) it would be useful for these dates to have the same format as those found in the weather data set...
+
+```{r}
+data.frame(Year = 1973:1983,Date = ros_dates) -> dfdates # Create a data frame that includes the year and the date for the join
+
+full_join(CBdata.1_10_clean,dfdates) -> CBdata.1_10_clean_dates # Join by year
+```
+
+
+d) Use a `join` function to add precipitation `PRCP`  and minimum daily temperature `TMIN` columns to your cherry blossom data set.
+
+```{r}
+weather_dat <- select(weather,DATE,PRCP,TMIN) # Select only the DATE, PRCP, and TMIN variables
+
+left_join(CBdata.1_10_clean_dates,weather_dat,by = c("Date" = "DATE")) -> full_data # left join by date (keep only the dates in CBdata.1_10)
+
+head(full_data)
+```
+
+
+
+# Playing with the indoor positioning system data
+
+The `IPS_sampledata` data set contains a fraction of the indoor positioning system data for 15 randomly sampled locations.This data set is loaded into memory using the chunk of R code below, complete the following exercises. 
+
+```{r eval=T, echo=T}
+# loads data set IPS_sampledata
+load("IPS_portion.RData")
+```
+
+### Variable dictionary
+
+- `time`: timestamp in milliseconds since midnight 01/01/1970 UTC
+
+- `scanMac`: MAC address of the scanning device (this is a handheld device)
+
+- `posX`, `posY` and `posZ`: the (x, y, z) physical coordinate of the scanning device
+
+- `orientation`: degree orientation of the user carrying the scanning device in degrees
+
+- `mac`: MAC address of an access point
+
+- `signal`: signal strength in dBm (Decibel-milliwatts)
+
+- `channel`: the channel frequency
+
+- `type`: type of device (access point = 3, device in adhoc mode = 1)
+
+### Let's clean up the data a bit
+
+1. Apply the same `class` conversions you did last week to get these variables into the correct class type. Use `dplyr` functions and piping to complete this operation (there are many ways to do so). If you'd like to `mutate` multiple columns at once, the `across()` function might be useful!
+```{r}
+colNameList1 <- c("time", "posX", "posY", "posZ", "orientation", "signal") 
+
+IPS_sampledata <- IPS_sampledata %>% 
+  mutate(across(.cols = colNameList1, as.numeric)) #Class conversion over multiple cols 
+```
+
+2. Because we only want data relative to access points, remove observations that correspond to any other type of device using `dplyr` functions.
+```{r}
+IPS_sampledata <- IPS_sampledata %>% 
+   filter(type=='3') #Only use type=3 that involves with AP
+```
+
+3. Last week you identified variables that provide redundant or no information. Remove them from the data frame using `dplyr` functions. 
+```{r}
+IPS_sampledata <- select(IPS_sampledata, -c(scanMac, posZ)) #Deleted scanMac and posZ columns  since they are the same throughout the data and we're dealing with only one floor 
+```
+
+4. Note that the `time` variable is in milliseconds.  Use `dplyr` to transform it into seconds and then convert its class into a time format using the function `as.POSIXct`.
+```{r}
+IPS_sampledata <- IPS_sampledata %>% 
+  mutate(time=time/1000) %>% 
+  mutate(time=as.POSIXct(time, tz="UTC", origin = "1970-01-01")) #Time conversion from UNIX time to actual time
+```
+
+5. Convert this data set to a more wide format by creating one column for each access point, with each of those columns containing the corresponding signal strengths. Hint: you should end up with a data frame that has a lot fewer rows!  
+Set this data set aside and use the long format data for the rest of the assignment
+
+```{r}
+IPS_sampledata %>% 
+  distinct() %>%
+  tidyr::pivot_wider(., names_from=mac, values_from=signal, values_fn=list) #Convert to wide format with each mac and corresponding RSSI
+```
+
+
+
+### Examining the data more closely
+
+```{r}
+load("IPS_portion.RData")
+IPS_sampledata
+```
+```{r}
+IPS_sampledata %>% select(orientation) %>% distinct() %>% order(decreasing = T)
+```
+
+
+1. Using grouping and `dplyr` functions, tally the  number of observations for all access points in the data. 
+
+```{r}
+library(dplyr)
+IPS_sampledata %>% group_by(mac) %>% tally() #Tally number of obs in mac column
+```
+
+2. While the researchers did their best to clean their data, some noise was introduced by access points on other floors.  Based on the number of counts, identify and remove likely suspects for access points read by mistake, again using `dplyr` functions.
+
+```{r}
+IPS_sampledata <- filter(IPS_sampledata, 
+                   mac == c("00:0f:a3:39:dd:cd", 
+                            "00:0f:a3:39:e1:c0", 
+                            "00:14:bf:3b:c7:c6", 
+                            "00:14:bf:b1:97:81", 
+                            "00:14:bf:b1:97:8a", 
+                            "00:14:bf:b1:97:8d", 
+                            "00:14:bf:b1:97:90")) #Take the top 7 APs with over 10k obs counts from Lab-1
+IPS_sampledata
+```
+
+3.  The orientation of the hand-held device considered was supposed to be exactly set to the 8 angles from 0-315 in increments of 45 degrees (360 is equivalent to 0). However, in practice the measured orientations were close to the 8 expected but had some error.  Use the `case_when` function to recode the orientation values as one of 0, 45, 90, 135, 180, 225, 270, 315. Call the recoded orientation variable `rec_orient`.
+
+```{r}
+IPS_sampledata <- IPS_sampledata %>% 
+  mutate(rec_orient = case_when(orientation >= 0.0 & orientation < 1.0 ~ 0, 
+                                orientation >= 44.0 & orientation < 50.0 ~ 45,
+                                orientation >= 90.0 & orientation < 91.0 ~ 90,
+                                orientation >= 134.0 & orientation  < 138.0 ~ 135,
+                                orientation >= 180.0 & orientation  < 181.0 ~ 180,
+                                orientation >= 223.0 & orientation < 226.0 ~ 225,
+                                orientation >= 265.0 & orientation < 271.0 ~ 270,
+                                orientation >= 313.0 & orientation < 316.0 ~ 315,
+                                orientation >= 355 & orientation < 360 ~ 0))
+IPS_sampledata
+```
+
+
+4. Last week you created the function `signal_summary` that takes as inputs a location (`posX`, `posY`, `posZ`), an orientation (`rec_orient`) and an access point id (`mac`).  The function identified and subset the rows in `IPS_sampledata` corresponding to this unique combination, then calculated and returned the mean and standard deviation for the corresponding signal strengths. You then used `lapply` to compute mean and standard deviation values for all combinations of location, orientation, and access point ID. 
+
+```{r}
+# IPS_sampledata %>% select(posX, posY, posZ, rec_orient, mac) %>% na.omit() %>% summarise_all(mean)
+
+#
+  
 ```
