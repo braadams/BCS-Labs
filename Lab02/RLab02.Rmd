@@ -1,7 +1,6 @@
-
 ---
 title: "R Coding Lab Part 2"
-subtitle: "STAT-4/510: Basic Consulting SKills "
+subtitle: "STAT-4/510: Basic Consulting Skills "
 author: Braxton Adams, Cyrus Cravens, Jonathan Adiri, Sang Xing
 output: 
   rmdformats::downcute:
@@ -194,25 +193,25 @@ load("IPS_portion.RData")
 colNameList1 <- c("time", "posX", "posY", "posZ", "orientation", "signal") 
 
 IPS_sampledata <- IPS_sampledata %>% 
-  mutate(across(.cols = colNameList1, as.numeric)) 
+  mutate(across(.cols = colNameList1, as.numeric)) #Class conversion over multiple cols 
 ```
 
 2. Because we only want data relative to access points, remove observations that correspond to any other type of device using `dplyr` functions.
 ```{r}
 IPS_sampledata <- IPS_sampledata %>% 
-   filter(type=='3')
+   filter(type=='3') #Only use type=3 that involves with AP
 ```
 
 3. Last week you identified variables that provide redundant or no information. Remove them from the data frame using `dplyr` functions. 
 ```{r}
-IPS_sampledata <- select(IPS_sampledata, -c(scanMac, posZ))
+IPS_sampledata <- select(IPS_sampledata, -c(scanMac, posZ)) #Deleted scanMac and posZ columns  since they are the same throughout the data and we're dealing with only one floor 
 ```
 
 4. Note that the `time` variable is in milliseconds.  Use `dplyr` to transform it into seconds and then convert its class into a time format using the function `as.POSIXct`.
 ```{r}
 IPS_sampledata <- IPS_sampledata %>% 
   mutate(time=time/1000) %>% 
-  mutate(time=as.POSIXct(time, tz="UTC", origin = "1970-01-01")) 
+  mutate(time=as.POSIXct(time, tz="UTC", origin = "1970-01-01")) #Time conversion from UNIX time to actual time
 ```
 
 5. Convert this data set to a more wide format by creating one column for each access point, with each of those columns containing the corresponding signal strengths. Hint: you should end up with a data frame that has a lot fewer rows!  
@@ -221,8 +220,9 @@ Set this data set aside and use the long format data for the rest of the assignm
 ```{r}
 IPS_sampledata %>% 
   distinct() %>%
-  tidyr::pivot_wider(., names_from=mac, values_from=signal, values_fn=list)
+  tidyr::pivot_wider(., names_from=mac, values_from=signal, values_fn=list) #Convert to wide format with each mac and corresponding RSSI
 ```
+
 
 
 
@@ -238,14 +238,14 @@ IPS_sampledata %>% select(orientation) %>% distinct() %>% order(decreasing = T)
 
 ```{r}
 library(dplyr)
-IPS_sampledata %>% group_by(mac) %>% tally() 
+IPS_sampledata %>% group_by(mac) %>% tally() # counts the number of records by group
 ```
 
 
 2. While the researchers did their best to clean their data, some noise was introduced by access points on other floors.  Based on the number of counts, identify and remove likely suspects for access points read by mistake, again using `dplyr` functions.
 
 ```{r}
-IPS_sampledata <- filter(IPS_sampledata, 
+IPS_sampledata <- filter(IPS_sampledata, # filter by desired record attributes within variable and removes unwanted records
                    mac == c("00:0f:a3:39:dd:cd", 
                             "00:0f:a3:39:e1:c0", 
                             "00:14:bf:3b:c7:c6", 
@@ -259,7 +259,7 @@ IPS_sampledata
 3.  The orientation of the hand-held device considered was supposed to be exactly set to the 8 angles from 0-315 in increments of 45 degrees (360 is equivalent to 0). However, in practice the measured orientations were close to the 8 expected but had some error.  Use the `case_when` function to recode the orientation values as one of 0, 45, 90, 135, 180, 225, 270, 315. Call the recoded orientation variable `rec_orient`.
 
 ```{r}
-IPS_sampledata <- IPS_sampledata %>% na.omit() %>% 
+IPS_sampledata <- IPS_sampledata %>% na.omit() %>% # removes na values
   mutate(rec_orient = case_when(orientation >= 0.0 & orientation < 1.0 ~ 0, # sets the left and right boundaries
                                 orientation >= 44.0 & orientation < 50.0 ~ 45,
                                 orientation >= 90.0 & orientation < 91.0 ~ 90,
