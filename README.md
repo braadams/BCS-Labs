@@ -25,6 +25,11 @@
  ┃ ┣ 📄RLab02.html
  ┃ ┣ 📄RLab02.Rmd
  ┃ ┗ 📄weatherdat.csv
+ ┣ 📂Lab03
+ ┃ ┣ 📄IPS_portion.RData
+ ┃ ┣ 📄RLab3_IPS.Rmd
+ ┃ ┣ 📄RLab3_IPS.html
+ ┃ ┣ 📄accessPointLocations.txt
  ┣ 📄.gitignore
  ┣ 📄BCS-Labs.Rproj
  ┣ 📄Logo.png
