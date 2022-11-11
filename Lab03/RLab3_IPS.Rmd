@@ -15,6 +15,7 @@ df_print: kable
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
+library(magrittr)
 ```
 
 ```{css, echo=FALSE}
@@ -99,44 +100,44 @@ For this part of the lab you may use some of the code from the previous two labs
 
 ```{r transform_vars}
 IPS_sampledata %>% 
-  mutate(time = as.Date.POSIXct(as.numeric(time)/1000),
-         posX = as.numeric(posX),
-         posY = as.numeric(posY),
+  mutate(time = as.Date.POSIXct(as.numeric(time)/1000), # Transforming the time variable from char to numeric and scaling by 1000
+         posX = as.numeric(posX),                       # Transforming the pos X variable from char to numeric
+         posY = as.numeric(posY),                       # etc...
          posZ = as.numeric(posZ),
          orientation = as.numeric(orientation),
          signal = as.numeric(signal),
          channel = as.numeric(channel),
          type = as.numeric(type)
-  ) -> IPS_sampledata
+  ) -> IPS_sampledata                                   # Storing the new data frame into IPS_sampledata
+
 ```
 
 
 2. From `IPS_sampledata`, keep only records for the six access points included in the `mac_locs` table, save these to `IPS_sampledata`.
 
 ```{r filter_by_macs}
-IPS_sampledata <- filter(IPS_sampledata, mac %in%  c("00:0f:a3:39:e1:c0",
-                                                  "00:14:bf:b1:97:8a", 
-                                                  "00:14:bf:3b:c7:c6", 
-                                                  "00:14:bf:b1:97:90",
-                                                  "00:14:bf:b1:97:8d",
-                                                  "00:14:bf:b1:97:81"))
+IPS_sampledata <- filter(IPS_sampledata, mac %in% c("00:0f:a3:39:e1:c0",
+                                                    "00:14:bf:b1:97:8a", 
+                                                    "00:14:bf:3b:c7:c6", 
+                                                    "00:14:bf:b1:97:90",
+                                                    "00:14:bf:b1:97:8d",
+                                                    "00:14:bf:b1:97:81"))
 ```
 
 3. Create a grouped version of the `orientation` variable, with groups (bins) determined by the proximity to angles 0, 45, 90, 135, 180, 225, 270, 315.
 
 ```{r bin_orientation}
-# your code here
-
-
+IPS_sampledata %>% 
+  mutate(orientation = (round(orientation / 45) * 45) %% 360) ->
+  IPS_sampledata
 ```
 
 
 4. Combine the information in `IPS_sampledata` and `mac_locs` using one of the `join_` functions we learned in class.
 
 ```{r mac_joins}
-# your code here
-
-
+right_join(IPS_sampledata,mac_locs,by = c("mac"= "Macs")) -> IPS_sampledata # Join by MAC address
+                                                                            # right_join has the added benefit of performing part 2
 ```
 
 
@@ -147,9 +148,8 @@ Throughout this section you'll have some freedom to create useful visualizations
 1. Generate a scatter plot showing the locations (`posX` and `posY` in `IPS_Sampledata`) of the handheld device, as well as those from the access points (variables `x` and `y` from `mac_locs`).   Use the `aesthetic` of your choosing to distinguish the handheld device locations from those corresponding to the access points.
 
 ```{r loc_scatter}
-# your code here
-
-
+IPS_sampledata %>% ggplot(aes(posX, posY, fill=scanMac)+
+         geom_point(aes(x,y,fill=mac_locs)))
 ```
 
 
