@@ -156,6 +156,16 @@ Throughout this section you'll have some freedom to create useful visualizations
 
 ```{r summary_by_combo}
 # your code here
+IPS_sampledata %>%  
+  group_by(posX,posY,posZ,orientation,mac) %>% 
+  summarize(
+    n=n(), 
+    mean(signal),
+    median(signal),
+    sd(signal),
+    dist = sqrt((posX-x)^2+(posY-y)^2)
+    
+  )
 
 
 ```
