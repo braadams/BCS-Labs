@@ -133,10 +133,8 @@ IPS_sampledata %>%
 4. Combine the information in `IPS_sampledata` and `mac_locs` using one of the `join_` functions we learned in class.
 
 ```{r mac_joins}
-# your code here
-
-right_join(IPS_sampledata,mac_locs,by = c("mac"= "Macs")) -> IPS_sampledata
-
+right_join(IPS_sampledata,mac_locs,by = c("mac"= "Macs")) -> IPS_sampledata # Join by MAC address
+                                                                            # right_join has the added benefit of performing part 2
 ```
 
 
