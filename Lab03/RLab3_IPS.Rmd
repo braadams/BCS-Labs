@@ -114,9 +114,12 @@ IPS_sampledata %>%
 2. From `IPS_sampledata`, keep only records for the six access points included in the `mac_locs` table, save these to `IPS_sampledata`.
 
 ```{r filter_by_macs}
-# your code here
-
-
+IPS_sampledata <- filter(IPS_sampledata, mac %in%  c("00:0f:a3:39:e1:c0",
+                                                  "00:14:bf:b1:97:8a", 
+                                                  "00:14:bf:3b:c7:c6", 
+                                                  "00:14:bf:b1:97:90",
+                                                  "00:14:bf:b1:97:8d",
+                                                  "00:14:bf:b1:97:81"))
 ```
 
 3. Create a grouped version of the `orientation` variable, with groups (bins) determined by the proximity to angles 0, 45, 90, 135, 180, 225, 270, 315.
