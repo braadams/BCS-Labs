@@ -160,9 +160,9 @@ IPS_sampledata %>%
   group_by(posX,posY,posZ,orientation,mac) %>% 
   summarize(
     n=n(), 
-    mean(signal),
-    median(signal),
-    sd(signal),
+    mean.signal = mean(signal),
+    median.signal = median(signal),
+    sd.signal = sd(signal),
     dist = sqrt((posX-x)^2+(posY-y)^2)
   ) -> IPS_summary
 ```
