@@ -122,9 +122,9 @@ IPS_sampledata %>%
 3. Create a grouped version of the `orientation` variable, with groups (bins) determined by the proximity to angles 0, 45, 90, 135, 180, 225, 270, 315.
 
 ```{r bin_orientation}
-# your code here
-
-
+IPS_sampledata %>% 
+  mutate(orientation = (round(orientation / 45) * 45) %% 360) ->
+  IPS_sampledata
 ```
 
 
