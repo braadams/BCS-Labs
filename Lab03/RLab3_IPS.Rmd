@@ -13,6 +13,8 @@ df_print: kable
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
 ```
 
 ```{css, echo=FALSE}
@@ -96,7 +98,16 @@ For this part of the lab you may use some of the code from the previous two labs
 1. Transform the variables in the data set into their correct types.
 
 ```{r transform_vars}
-# your code here
+IPS_sampledata %>% 
+  mutate(time = as.Date.POSIXct(as.numeric(time)/1000),
+         posX = as.numeric(posX),
+         posY = as.numeric(posY),
+         posZ = as.numeric(posZ),
+         orientation = as.numeric(orientation),
+         signal = as.numeric(signal),
+         channel = as.numeric(channel),
+         type = as.numeric(type)
+  )
 ```
 
 
