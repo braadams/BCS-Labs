@@ -143,8 +143,8 @@ Throughout this section you'll have some freedom to create useful visualizations
 1. Generate a scatter plot showing the locations (`posX` and `posY` in `IPS_Sampledata`) of the handheld device, as well as those from the access points (variables `x` and `y` from `mac_locs`).   Use the `aesthetic` of your choosing to distinguish the handheld device locations from those corresponding to the access points.
 
 ```{r loc_scatter}
-IPS_sampledata %>% ggplot(aes(posX, posY, fill=scanMac)+
-         geom_point(aes(x,y,fill=mac_locs)))
+# IPS_sampledata %>% ggplot(aes(posX, posY, fill=scanMac)+
+#          geom_point(aes(x,y,fill=mac_locs)))
 ```
 
 
@@ -171,10 +171,19 @@ IPS_sampledata %>%
 
 4. Replicate the plot attached in the link.
 
-```{r rep_figure}
-xfun::embed_file("SignalByLocation.pdf")
-ggplot(data = IPS_sampledata, aes(y = posY, x = posX), group=(mac)) +
-  geom_boxplot()+
-  facet_wrap(.~signal, scales = "free")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```{r rep_figure, fig.width=20, eval=FALSE}
+# xfun::embed_file("SignalByLocation.pdf")
+IPS_sampledata %>% mutate(posXY=paste(posX, posY, sep = ",")) %>% 
+    ggplot(aes(x = posXY, y=signal)) +
+    # geom_point(colour ='#6d91ed', show.legend = F)+
+    geom_jitter(colour = "#6d91ed")+
+    geom_boxplot()+
+    labs(title="Signal strength by location", 
+         subtitle = "(by access point/orientation combination)",
+         x="location coordinates",
+         y="signal")+
+    facet_grid(mac~orientation, scales = "free")+
+    theme_bw()
 ```
+
+![](rep_figure.png)
