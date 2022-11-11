@@ -99,16 +99,15 @@ For this part of the lab you may use some of the code from the previous two labs
 
 ```{r transform_vars}
 IPS_sampledata %>% 
-  mutate(time = as.Date.POSIXct(as.numeric(time)/1000), 
-         posX = as.numeric(posX),
-         posY = as.numeric(posY),
+  mutate(time = as.Date.POSIXct(as.numeric(time)/1000), # Transforming the time variable from char to numeric and scaling by 1000
+         posX = as.numeric(posX),                       # Transforming the pos X variable from char to numeric
+         posY = as.numeric(posY),                       # etc...
          posZ = as.numeric(posZ),
          orientation = as.numeric(orientation),
          signal = as.numeric(signal),
          channel = as.numeric(channel),
          type = as.numeric(type)
-  ) -> IPS_sampledata
-# Transforming variables from char to numeric
+  ) -> IPS_sampledata                                   # Storing the new data frame into IPS_sampledata
 
 ```
 
