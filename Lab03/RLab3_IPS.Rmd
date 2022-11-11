@@ -134,6 +134,7 @@ IPS_sampledata %>%
 ```{r mac_joins}
 # your code here
 
+right_join(IPS_sampledata,mac_locs,by = c("mac"= "Macs")) -> IPS_sampledata
 
 ```
 
