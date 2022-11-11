@@ -174,4 +174,8 @@ IPS_sampledata %>%
 
 ```{r rep_figure}
 xfun::embed_file("SignalByLocation.pdf")
+ggplot(data = IPS_sampledata, aes(y = posY, x = posX), group=(mac)) +
+  geom_boxplot()+
+  facet_wrap(.~signal, scales = "free")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
