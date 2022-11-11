@@ -107,8 +107,7 @@ IPS_sampledata %>%
          signal = as.numeric(signal),
          channel = as.numeric(channel),
          type = as.numeric(type)
-
-  )     
+  ) -> IPS_sampledata
 # Transforming variables from char to numeric
 
 ```
