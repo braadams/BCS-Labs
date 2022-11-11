@@ -99,7 +99,7 @@ For this part of the lab you may use some of the code from the previous two labs
 
 ```{r transform_vars}
 IPS_sampledata %>% 
-  mutate(time = as.Date.POSIXct(as.numeric(time)/1000),
+  mutate(time = as.Date.POSIXct(as.numeric(time)/1000), 
          posX = as.numeric(posX),
          posY = as.numeric(posY),
          posZ = as.numeric(posZ),
@@ -107,7 +107,8 @@ IPS_sampledata %>%
          signal = as.numeric(signal),
          channel = as.numeric(channel),
          type = as.numeric(type)
-  )
+  )     
+# Transforming variables from char to numeric
 ```
 
 
