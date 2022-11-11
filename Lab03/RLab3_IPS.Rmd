@@ -157,14 +157,14 @@ IPS_sampledata %>% ggplot(aes(posX, posY, fill=scanMac)+
 
 ```{r summary_by_combo}
 IPS_sampledata %>%  
-  group_by(posX,posY,posZ,orientation,mac) %>% 
+  group_by(posX,posY,posZ,orientation,mac,x,y) %>% 
   summarize(
     n=n(), 
     mean.signal = mean(signal),
     median.signal = median(signal),
-    sd.signal = sd(signal),
-    dist = sqrt((posX-x)^2+(posY-y)^2)
-  ) -> IPS_summary
+    sd.signal = sd(signal)
+  ) %>%
+  mutate(dist = sqrt((posX-x)^2+(posY-y)^2)) -> IPS_summary
 ```
 
 
@@ -173,7 +173,6 @@ IPS_sampledata %>%
 ```{r cool_dat_vis}
 
 ```
-
 
 4. Replicate the plot attached in the link.
 
