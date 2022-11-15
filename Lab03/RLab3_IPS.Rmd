@@ -143,8 +143,18 @@ Throughout this section you'll have some freedom to create useful visualizations
 1. Generate a scatter plot showing the locations (`posX` and `posY` in `IPS_Sampledata`) of the handheld device, as well as those from the access points (variables `x` and `y` from `mac_locs`).   Use the `aesthetic` of your choosing to distinguish the handheld device locations from those corresponding to the access points.
 
 ```{r loc_scatter}
-# IPS_sampledata %>% ggplot(aes(posX, posY, fill=scanMac)+
-#          geom_point(aes(x,y,fill=mac_locs)))
+IPS_sampledata %>% ggplot() +
+  geom_point( aes(posX, posY), colour = "red") +
+  geom_point(aes(x = x, y = y ), colour="blue") +
+  labs (
+    title = "Receiver & Access Point Locations",
+    subtitle = "Red = Receivers, Blue = Acess Point",
+    # caption = "",
+    # tag = "",
+    x = "x",
+    y = "y",
+    # colour = ""
+  )
 ```
 
 
@@ -167,25 +177,11 @@ IPS_sampledata %>%
 3. Using the data generated from the exercise above, produce one or more visualizations (at most 3) to explore the relationship between  orientation angle, location (relative to the access point), and signal strength, using `ggplot2` tools discussed in class. Briefly comment on the relationships you observe in your visualization(s) between orientation angle, distance between locations and access points, and signal strength. From your visualization(s), what cardinal direction can you relate the 0 degree orientation with?
 
 ```{r cool_dat_vis}
-IPS_summary %>%
-  ggplot(aes(x = dist, y = median.signal)) +
+IPS_sampledata %>%
+  mutate(posXY = paste(posX, posY, sep = ",")) %>%
+  ggplot(aes(x = orientation, y = signal)) +
   geom_point() +
-  facet_wrap(~mac)
-
-expand_grid(x = c(-1, 0, 1), y = c(-1,0,1)) %>%
-  filter(!(x == 0 & y == 0)) %>%
-  transmute(
-    vec = paste0("{", x, ",", y, "}"),
-    vec.x = x / sqrt(x^2 + y^2),
-    vec.y = y / sqrt(x^2 + y^2)
-  ) -> vec
-
-IPS_summary %>%
-  mutate(dx = x - posX, dy = y - posY) %>%
-  ungroup() %>%
-  filter(orientation %% 90 == 0) %>%
-  mutate(slope = abs(dx) / abs(dy)) %>%
-  filter(slope <= 0.1 | slope >= 10)
+  facet_grid(mac ~ posXY)
 ```
 
 4. Replicate the plot attached in the link.
