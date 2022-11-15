@@ -152,14 +152,15 @@ Throughout this section you'll have some freedom to create useful visualizations
 
 ```{r summary_by_combo}
 IPS_sampledata %>%  
-  group_by(posX,posY,posZ,orientation,mac,x,y) %>% 
+  group_by(posX,posY,posZ,orientation,mac,x,y) %>% # Group by position, orientation, and mac address. Additional "group_by" variables included so that they are not dropped by summarize.
   summarize(
-    n=n(), 
-    mean.signal = mean(signal),
-    median.signal = median(signal),
-    sd.signal = sd(signal)
+    n=n(),
+    mean.signal = mean(signal),     # Mean signal for each position / orientation / mac combination
+    median.signal = median(signal), # Median signal "
+    sd.signal = sd(signal)          # Standard Deviation of signal " 
   ) %>%
-  mutate(dist = sqrt((posX-x)^2+(posY-y)^2)) -> IPS_summary
+  mutate(dist = sqrt((posX-x)^2+(posY-y)^2)) -> # Distance between position and access point
+  IPS_summary
 ```
 
 
