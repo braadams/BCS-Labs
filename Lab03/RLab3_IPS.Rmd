@@ -180,7 +180,33 @@ IPS_sampledata %>%
 IPS_summary %>%
   ggplot(aes(x = dist, y = median.signal)) +
   geom_point() +
-  facet_wrap(~mac)
+  facet_wrap(~mac) + 
+  labs(
+    title = "Distance against Median Signal Strength",
+    subtitle = "Grouped by Access Point"
+  )
+
+IPS_summary %>%
+  mutate(dx = x - posX, dy = y - posY) %>%
+  mutate(direction = case_when(
+    abs(dx) > abs(dy) & dx >= 0 ~ "Positive X direction",
+    abs(dx) > abs(dy) & dx < 0  ~ "Negative X direction",
+    abs(dx) < abs(dy) & dy >= 0 ~ "Positive Y direction",
+    abs(dx) < abs(dy) & dy < 0  ~ "Negative Y direction"
+  )) %>%
+  mutate(slope = abs(dx) / abs(dy)) %>%
+  filter(slope <= 0.1 | slope >= 10) %>%
+  #filter(orientation %% 90 == 0) %>%
+  ggplot(aes(x = orientation, y = median.signal)) +
+  geom_line(aes(group = paste0(posX, posY), color = mac)) + 
+  scale_color_brewer(palette="Set2") +
+  facet_wrap(~direction) + 
+  labs(
+    title = "Orientation against Median Signal Strength",
+    subtitle = "Grouped by prominent direction to selected access point.",
+    caption = "Filtered data; only locations that are very close to being directly \nNorth, East, South, or West of the access point are displayed."  
+  ) +
+  scale_x_continuous(breaks = seq(0, 315, by = 45))
 ```
 
 4. Replicate the plot attached in the link.
