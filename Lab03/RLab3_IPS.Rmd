@@ -232,7 +232,7 @@ IPS_sampledata %>%
          y="signal")+
   facet_grid(mac~orientation, scales = "free")+                 # Facet with orientations on the "U" axis and mac addresses on the "V" axis
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))  # Rotate x-xis labels
 ```
 
 ![](rep_figure.png)

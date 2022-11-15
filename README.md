@@ -31,7 +31,6 @@
  ┃ ┣ 📄RLab3_IPS.html
  ┃ ┣ 📄accessPointLocations.txt
  ┣ 📄.gitignore
- ┣ 📄BCS-Labs.Rproj
  ┣ 📄Logo.png
  ┗ 📄README.md
 ```
