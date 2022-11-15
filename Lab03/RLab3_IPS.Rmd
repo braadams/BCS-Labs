@@ -167,11 +167,25 @@ IPS_sampledata %>%
 3. Using the data generated from the exercise above, produce one or more visualizations (at most 3) to explore the relationship between  orientation angle, location (relative to the access point), and signal strength, using `ggplot2` tools discussed in class. Briefly comment on the relationships you observe in your visualization(s) between orientation angle, distance between locations and access points, and signal strength. From your visualization(s), what cardinal direction can you relate the 0 degree orientation with?
 
 ```{r cool_dat_vis}
-IPS_sampledata %>%
-  mutate(posXY = paste(posX, posY, sep = ",")) %>%
-  ggplot(aes(x = orientation, y = signal)) +
+IPS_summary %>%
+  ggplot(aes(x = dist, y = median.signal)) +
   geom_point() +
-  facet_grid(mac ~ posXY)
+  facet_wrap(~mac)
+
+expand_grid(x = c(-1, 0, 1), y = c(-1,0,1)) %>%
+  filter(!(x == 0 & y == 0)) %>%
+  transmute(
+    vec = paste0("{", x, ",", y, "}"),
+    vec.x = x / sqrt(x^2 + y^2),
+    vec.y = y / sqrt(x^2 + y^2)
+  ) -> vec
+
+IPS_summary %>%
+  mutate(dx = x - posX, dy = y - posY) %>%
+  ungroup() %>%
+  filter(orientation %% 90 == 0) %>%
+  mutate(slope = abs(dx) / abs(dy)) %>%
+  filter(slope <= 0.1 | slope >= 10)
 ```
 
 4. Replicate the plot attached in the link.
