@@ -214,17 +214,17 @@ IPS_summary %>%
 ```{r rep_figure, fig.width=20, eval=FALSE}
 # xfun::embed_file("SignalByLocation.pdf")
 IPS_sampledata %>%
-  mutate(posXY=paste(posX, posY, sep = ",")) %>%                  # Create a new variable to uniquely identify each location.
-    ggplot(aes(x = posXY, y=signal)) +                            # X axis for location, Y axis for signal strength
-    # geom_point(colour ='#6d91ed', show.legend = F)+             
-    geom_jitter(colour = "#6d91ed")+                              # Add each signal strength point; use geom_jitter to avoid the points overlapping.
-    geom_boxplot()+                                               # Add boxplot for each position
-    labs(title="Signal strength by location", 
+  mutate(posXY=paste(posX, posY, sep = ",")) %>%                # Create a new variable to uniquely identify each location.
+  ggplot(aes(x = posXY, y=signal)) +                            # X axis for location, Y axis for signal strength
+  geom_jitter(colour = "#6d91ed")+                              # Add each signal strength point; use geom_jitter to avoid the points overlapping.
+  geom_boxplot()+                                               # Add boxplot for each position
+  labs(title="Signal strength by location", 
          subtitle = "(by access point/orientation combination)",
          x="location coordinates",
          y="signal")+
-    facet_grid(mac~orientation, scales = "free")+                 # Facet with orientations on the "U" axis and mac addresses on the "V" axis
-    theme_bw()
+  facet_grid(mac~orientation, scales = "free")+                 # Facet with orientations on the "U" axis and mac addresses on the "V" axis
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 ![](rep_figure.png)
