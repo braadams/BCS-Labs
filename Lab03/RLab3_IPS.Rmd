@@ -185,7 +185,11 @@ IPS_summary %>%
     title = "Distance against Median Signal Strength",
     subtitle = "Grouped by Access Point"
   )
+```
 
+This chart shows a general negative relationship between the distance between the reciever and access point and the recorded signal strength.
+
+``` {r cool_data_vis}
 IPS_summary %>%
   mutate(dx = x - posX, dy = y - posY) %>%
   mutate(direction = case_when(
@@ -208,6 +212,10 @@ IPS_summary %>%
   ) +
   scale_x_continuous(breaks = seq(0, 315, by = 45))
 ```
+
+This chart appears to suggest that there may not be a clear direct relationship between orientation and signal strength. We specifically selected receiver locations that were close to being directly North, East, South, or West of an access point; for example,
+the point $(1,9)$ is directly West of the access point located at $(33.5, 9.3)$. The hope is that restricting the dataset to these points and plotting the signal strength against orientation would make it clear which orientation had the strongest signal strength and use that to determine the orientation that matches with North. Sadly, this seems to be inconclusive without accounting for other confounding variables.
+
 
 4. Replicate the plot attached in the link.
 
