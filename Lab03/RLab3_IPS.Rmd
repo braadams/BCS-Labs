@@ -144,9 +144,9 @@ Throughout this section you'll have some freedom to create useful visualizations
 
 ```{r loc_scatter}
 IPS_sampledata %>% ggplot() +
-  geom_point( aes(posX, posY), colour = "red") +
-  geom_point(aes(x = x, y = y ), colour="blue") +
-  labs (
+  geom_point( aes(posX, posY), colour = "red") +  # Assign receiver coordinates a red color
+  geom_point(aes(x = x, y = y ), colour="blue") + # Assign access point coordinates a blue color
+  labs (                                          # Add title, subtitle, and axis labels.
     title = "Receiver & Access Point Locations",
     subtitle = "Red = Receivers, Blue = Acess Point",
     # caption = "",
