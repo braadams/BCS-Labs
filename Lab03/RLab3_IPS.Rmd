@@ -143,8 +143,18 @@ Throughout this section you'll have some freedom to create useful visualizations
 1. Generate a scatter plot showing the locations (`posX` and `posY` in `IPS_Sampledata`) of the handheld device, as well as those from the access points (variables `x` and `y` from `mac_locs`).   Use the `aesthetic` of your choosing to distinguish the handheld device locations from those corresponding to the access points.
 
 ```{r loc_scatter}
-# IPS_sampledata %>% ggplot(aes(posX, posY, fill=scanMac)+
-#          geom_point(aes(x,y,fill=mac_locs)))
+IPS_sampledata %>% ggplot() +
+  geom_point( aes(posX, posY), colour = "red") +
+  geom_point(aes(x = x, y = y ), colour="blue") +
+  labs (
+    title = "Receiver & Access Point Locations",
+    subtitle = "Red = Receivers, Blue = Acess Point",
+    # caption = "",
+    # tag = "",
+    x = "x",
+    y = "y",
+    # colour = ""
+  )
 ```
 
 
