@@ -178,9 +178,9 @@ IPS_sampledata %>%
 
 ```{r cool_dat_vis}
 IPS_summary %>%
-  ggplot(aes(x = dist, y = median.signal)) +
-  geom_point() +
-  facet_wrap(~mac) + 
+  ggplot(aes(x = dist, y = median.signal)) +  # dis for x-axis values, median_signal for y-axis values
+  geom_point() + #plot points for median signal at every orientation
+  facet_wrap(~mac) + #facet with APs' mac address
   labs(
     title = "Distance against Median Signal Strength",
     subtitle = "Grouped by Access Point"
@@ -191,26 +191,27 @@ This chart shows a general negative relationship between the distance between th
 
 ``` {r cool_data_vis}
 IPS_summary %>%
-  mutate(dx = x - posX, dy = y - posY) %>%
+  mutate(dx = x - posX, dy = y - posY) %>% # x-posX is the distance from recievers's x-coord to AP location 
+                                           # y-posy is the distance from retrievers' y-coord to AP location  
   mutate(direction = case_when(
-    abs(dx) > abs(dy) & dx >= 0 ~ "Positive X direction",
-    abs(dx) > abs(dy) & dx < 0  ~ "Negative X direction",
-    abs(dx) < abs(dy) & dy >= 0 ~ "Positive Y direction",
-    abs(dx) < abs(dy) & dy < 0  ~ "Negative Y direction"
+    abs(dx) > abs(dy) & dx >= 0 ~ "Positive X direction", # For any negative dx is is E of APs
+    abs(dx) > abs(dy) & dx < 0  ~ "Negative X direction", # For any positive dx is is W of APs
+    abs(dx) < abs(dy) & dy >= 0 ~ "Positive Y direction", # For any negative dy is is N of APs
+    abs(dx) < abs(dy) & dy < 0  ~ "Negative Y direction"  # For any positive dy is is S of APs
   )) %>%
-  mutate(slope = abs(dx) / abs(dy)) %>%
-  filter(slope <= 0.1 | slope >= 10) %>%
+  mutate(slope = abs(dx) / abs(dy)) %>%  # Use slope to filter receivers in a boundary
+  filter(slope <= 0.1 | slope >= 10) %>% # Check only the receiver within the boundary between 10 and 0.1 
   #filter(orientation %% 90 == 0) %>%
-  ggplot(aes(x = orientation, y = median.signal)) +
-  geom_line(aes(group = paste0(posX, posY), color = mac)) + 
-  scale_color_brewer(palette="Set2") +
-  facet_wrap(~direction) + 
+  ggplot(aes(x = orientation, y = median.signal)) + 
+  geom_line(aes(group = paste0(posX, posY), color = mac)) +  #every line is one receiver
+  scale_color_brewer(palette="Set2") +  #color receiver with its mac adress color 
+  facet_wrap(~direction) +  #facet with directions
   labs(
     title = "Orientation against Median Signal Strength",
     subtitle = "Grouped by prominent direction to selected access point.",
     caption = "Filtered data; only locations that are very close to being directly \nNorth, East, South, or West of the access point are displayed."  
   ) +
-  scale_x_continuous(breaks = seq(0, 315, by = 45))
+  scale_x_continuous(breaks = seq(0, 315, by = 45)) #resale x-axis label
 ```
 
 This chart appears to suggest that there may not be a clear direct relationship between orientation and signal strength. We specifically selected receiver locations that were close to being directly North, East, South, or West of an access point; for example,
