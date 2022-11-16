@@ -187,7 +187,7 @@ IPS_summary %>%
   )
 ```
 
-This chart shows a general negative relationship between the distance between the reciever and access point and the recorded signal strength.
+This chart shows a general negative relationship between the distance between the receiver and access point and the recorded signal strength.
 
 ``` {r cool_data_vis}
 IPS_summary %>%
