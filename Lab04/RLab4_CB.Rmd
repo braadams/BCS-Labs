@@ -53,18 +53,18 @@ morley.dat %>%
 ## 2
 ```{r}
 morley.dat %>%
-  group_by(Expt) %>%
+  group_by(Expt) %>%           # Grouping by experiment so the quartiles would be calculated individually for each experiment
   mutate(
     q25 = quantile(Speed, 0.25),
     q50 = quantile(Speed, 0.50),
-    q75 = quantile(Speed, 0.75)
+    q75 = quantile(Speed, 0.75)     # Calcutaling quartiles
   ) %>%
   mutate(IQR = q75 - q25) %>%
-  filter(Speed < q75 + 1.5*IQR) %>%
-  filter(Speed > q25 - 1.5*IQR) %>%
-  mutate(outliers = "No") %>%
-  rbind(mutate(morley.dat, outliers = "Yes")) %>%
-  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) + 
+  filter(Speed < q75 + 1.5*IQR) %>%  
+  filter(Speed > q25 - 1.5*IQR) %>%   # Removing the outliers
+  mutate(outliers = "No") %>%         
+  rbind(mutate(morley.dat, outliers = "Yes")) %>% # Adding the old plot back for comparison
+  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) +  # Plotting the results
   geom_boxplot() +
   facet_wrap(~outliers)
 ```
