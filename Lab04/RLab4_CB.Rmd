@@ -57,7 +57,7 @@ humanNames <- read.csv("humans-names.csv")
 
 if(!require(stringdist)){
     install.packages("stringdist")
-    library(somepackage)
+    library(stringdist)
 }
 ```
 
@@ -119,6 +119,7 @@ Hint: There are a number of ways to measure the similarity of strings and that p
 
 ## 1
 ```{r}
+dist.matrix<-stringdistmatrix(my_df$birth_and_names,my_df$birth_and_names,method='lv',p=0.1)
 
 ```
 
