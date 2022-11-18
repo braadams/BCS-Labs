@@ -81,14 +81,32 @@ Apart from the physics questions, the dataset derived by the Michelson–Morley 
 
 ## 1
 ```{r}
-
+morley.dat %>%                                                                    
+  mutate(Expt = "Total") %>%                                   # Grouping all the experiments results into one factor. 
+  rbind(morley.dat) %>%                                        # Binding old and new dataframes together.
+  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) + # Plotting boxplots.
+  geom_boxplot()
 ```
 
 2) If you discard the outliers within each setup, are the differences between setups increased or decreased? Answer with either a visualization or by looking at statistics on the reduced groups.
 
 ## 2
 ```{r}
-
+morley.dat %>%
+  group_by(Expt) %>%           # Grouping by experiment so the quartiles would be calculated individually for each experiment
+  mutate(
+    q25 = quantile(Speed, 0.25),
+    q50 = quantile(Speed, 0.50),
+    q75 = quantile(Speed, 0.75)     # Calcutaling quartiles
+  ) %>%
+  mutate(IQR = q75 - q25) %>%
+  filter(Speed < q75 + 1.5*IQR) %>%  
+  filter(Speed > q25 - 1.5*IQR) %>%   # Removing the outliers
+  mutate(outliers = "No") %>%         
+  rbind(mutate(morley.dat, outliers = "Yes")) %>% # Adding the old plot back for comparison
+  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) +  # Plotting the results
+  geom_boxplot() +
+  facet_wrap(~outliers)
 ```
 
 # Mispelled Names
