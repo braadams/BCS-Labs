@@ -41,10 +41,10 @@ Apart from the physics questions, the dataset derived by the Michelson–Morley 
 
 ## 1
 ```{r}
-morley.dat %>%
-  mutate(Expt = "Total") %>%
-  rbind(morley.dat) %>%
-  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) + 
+morley.dat %>%                                                                    
+  mutate(Expt = "Total") %>%                                   # Grouping all the experiments results into one factor. 
+  rbind(morley.dat) %>%                                        # Binding old and new dataframes together.
+  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) + # Plotting boxplots.
   geom_boxplot()
 ```
 
