@@ -18,6 +18,7 @@ library(ggplot2)
 library(magrittr)
 
 morley.dat <- read.csv("morley.dat")
+humandNames <- read.csv("humans-names.csv")
 ```
 
 **Complete the following lab as a group. This document should exist in your GitHub repo while you're working on it. Your code should be heavily commented so someone reading your code can follow along easily. See the first code snippet below for an example of commented code.**
