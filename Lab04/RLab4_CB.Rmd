@@ -17,7 +17,7 @@ library(tidyverse)
 library(ggplot2)
 library(magrittr)
 
-morley.dat <- read.csv("morley.dat")
+morley.dat <- read.table("morley.dat", header=TRUE)
 humandNames <- read.csv("humans-names.csv")
 ```
 
