@@ -41,7 +41,11 @@ Apart from the physics questions, the dataset derived by the Michelson–Morley 
 
 ## 1
 ```{r}
-
+morley.dat %>%
+  mutate(Expt = "Total") %>%
+  rbind(morley.dat) %>%
+  ggplot(aes(y = Speed, group = Expt, color = factor(Expt))) + 
+  geom_boxplot()
 ```
 
 2) If you discard the outliers within each setup, are the differences between setups increased or decreased? Answer with either a visualization or by looking at statistics on the reduced groups.
