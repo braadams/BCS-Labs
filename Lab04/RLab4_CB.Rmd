@@ -88,6 +88,8 @@ morley.dat %>%
   geom_boxplot()
 ```
 
+Here, notice that with each experiment individually, we drop one observation from the first experiment and 5 observations from the third due to outliers. However, taking the entire dataset, we drop 3 total observations due to outliers.
+
 2) If you discard the outliers within each setup, are the differences between setups increased or decreased? Answer with either a visualization or by looking at statistics on the reduced groups.
 
 ## 2
@@ -108,6 +110,8 @@ morley.dat %>%
   geom_boxplot() +
   facet_wrap(~outliers)
 ```
+
+Here, notice that the distributions of speeds for each experiment do not significantly change when dropping outliers.
 
 # Mispelled Names
 Our data set `humans-names.csv` contains 25,000 height and weight measurements. Each row has a person’s first name pulled from the US Social Security Agency list of common first names over the last century.
