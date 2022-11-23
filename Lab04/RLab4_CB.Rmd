@@ -139,14 +139,14 @@ Arrange all of the histograms into one figure write a short interpretation of it
 
 ## 2
 ```{r warning=FALSE, }
-humanNames_clean$badNames <- humanNames$Name
+humanNames_clean$badNames <- humanNames$Name # Add original names to new dataframe
 
-humanNames_clean$dist <- stringdist(humanNames_clean$badNames, humanNames_clean$Name, method='dl')
+humanNames_clean$dist <- stringdist(humanNames_clean$badNames, humanNames_clean$Name, method='dl') # get string distance between original names and spellchecked names
 
 ggplot(humanNames_clean, aes(x=dist)) +
-  geom_histogram(binwidth=1) +
-  scale_y_continuous(trans="log10")+
-  facet_wrap(. ~ Name)+
+  geom_histogram(binwidth=1) + # Histogram
+  scale_y_continuous(trans="log10")+ # Logarithmic scale
+  facet_wrap(. ~ Name)+ # Group by name
   theme_bw()
 ```
 
