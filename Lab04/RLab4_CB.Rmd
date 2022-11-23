@@ -123,10 +123,15 @@ Hint: There are a number of ways to measure the similarity of strings and that p
 
 ## 1
 ```{r}
-names(table(humanNames$Name)[table(humanNames$Name)>5]) -> correctNames
-correct_words <- correctNames[stringdist::amatch(humanNames$Name, correctNames, maxDist = Inf)]
-humanNames <- humanNames %>% transmute(Name=correct_words) 
-table(humanNames)
+table(humanNames$Name)[table(humanNames$Name) > 5] %>% names() -> good_names
+
+stringdist::stringdistmatrix(humanNames$Name, good_names) %>%
+  apply(1, which.min) -> name_index
+
+humanNames %>%
+  mutate(Name = good_names[name_index]) -> humanNames_clean
+
+table(humanNames_clean)
 ```
 
 2) For each of the genuine names identified in (1), produce a histogram showing the distribution of Damerau–Levenshtein distances from the genuine name to the classified data. Make sure distances from genuine names to other genuine names are not included in these distributions.  
@@ -141,12 +146,12 @@ Arrange all of the histograms into one figure write a short interpretation of it
 
 ## 3
 ```{r}
-table(humanNames$Name)[table(humanNames$Name) > 5] %>% names() -> good_names
+names(table(humanNames$Name)[table(humanNames$Name)>5]) -> correctNames
 
-stringdist::stringdistmatrix(humanNames$Name, good_names) %>%
-  apply(1, which.min) -> name_index
+correct_words <- correctNames[stringdist::amatch(humanNames$Name, correctNames, maxDist = Inf)]
 
-humanNames %>%
-  mutate(Name = good_names[name_index]) -> humanNames_clean2
+humanNames <- humanNames %>% transmute(Name=correct_words) 
+
+table(humanNames)
 ```
 
