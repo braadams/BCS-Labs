@@ -123,7 +123,7 @@ Hint: There are a number of ways to measure the similarity of strings and that p
 
 ## 1
 ```{r}
-table(humanNames$Name)[table(humanNames$Name) > 5] %>% names() -> good_names
+table(humanNames$Name)[table(humanNames$Name) > 5] %>% names() -> good_names #Take any 
 
 stringdist::stringdistmatrix(humanNames$Name, good_names) %>%
   apply(1, which.min) -> name_index
@@ -138,9 +138,19 @@ table(humanNames_clean$Name)
 Arrange all of the histograms into one figure write a short interpretation of it intended for a non-statistician client. 
 
 ## 2
-```{r}
+```{r warning=FALSE, }
+humanNames_clean$badNames <- humanNames$Name
 
+humanNames_clean$dist <- stringdist(humanNames_clean$badNames, humanNames_clean$Name, method='dl')
+
+ggplot(humanNames_clean, aes(x=dist)) +
+  geom_histogram(binwidth=1) +
+  scale_y_continuous(trans="log10")+
+  facet_wrap(. ~ Name)+
+  theme_bw()
 ```
+
+This is graph has a logarithmic scale on y-axis to show better output. Using `Barbara` as an example,   it's saying that the distance between correct name and other names have a count of $10^1000$ roughly, and $10^30$ counts with misspelled names, and so on for other names also.
 
 3) Write code that reclassifies names similar to problem (1), but fully automated. You should end up with a function that takes the original data set and returns a cleaned version. Compare this cleaned data frame to the one from problem (1) and quantify the accuracy (i.e. what proportion of rows match?). Make sure your automated process achieves 90%, but shoot for higher if possible! 
 
