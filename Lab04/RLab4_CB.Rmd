@@ -131,7 +131,7 @@ stringdist::stringdistmatrix(humanNames$Name, good_names) %>%
 humanNames %>%
   mutate(Name = good_names[name_index]) -> humanNames_clean
 
-table(humanNames_clean)
+table(humanNames_clean$Name)
 ```
 
 2) For each of the genuine names identified in (1), produce a histogram showing the distribution of Damerau–Levenshtein distances from the genuine name to the classified data. Make sure distances from genuine names to other genuine names are not included in these distributions.  
@@ -146,12 +146,14 @@ Arrange all of the histograms into one figure write a short interpretation of it
 
 ## 3
 ```{r}
-names(table(humanNames$Name)[table(humanNames$Name)>5]) -> correctNames
+names(table(humanNames$Name)[table(humanNames$Name)>5]) -> correctNames # Store variable containing all names with correct spellings
 
-correct_words <- correctNames[stringdist::amatch(humanNames$Name, correctNames, maxDist = Inf)]
+correct_words <- correctNames[stringdist::amatch(humanNames$Name, correctNames, maxDist = Inf)] # Use stringdist:amatch to "approximately" match the names based on the correct spellings
 
-humanNames <- humanNames %>% transmute(Name=correct_words) 
+humanNames <- humanNames %>% mutate(Name=correct_words) # Change Name in-place to correct spellings
 
-table(humanNames)
+table(humanNames$Name) # Table to compare against (1)
+
+identical(humanNames$Name, humanNames_clean$Name)
 ```
 
