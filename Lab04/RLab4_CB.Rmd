@@ -123,15 +123,15 @@ Hint: There are a number of ways to measure the similarity of strings and that p
 
 ## 1
 ```{r}
-table(humanNames$Name)[table(humanNames$Name) > 5] %>% names() -> good_names #Take any 
+table(humanNames$Name)[table(humanNames$Name) > 5] %>% names() -> good_names # Extract correct names from count of all unique names in names column
 
 stringdist::stringdistmatrix(humanNames$Name, good_names) %>%
-  apply(1, which.min) -> name_index
+  apply(1, which.min) -> name_index  # Indexing bad names from good names
 
 humanNames %>%
-  mutate(Name = good_names[name_index]) -> humanNames_clean
+  mutate(Name = good_names[name_index]) -> humanNames_clean # Create column of good names from indexing
 
-table(humanNames_clean$Name)
+table(humanNames_clean$Name) # Count the unique good names
 ```
 
 2) For each of the genuine names identified in (1), produce a histogram showing the distribution of Damerau–Levenshtein distances from the genuine name to the classified data. Make sure distances from genuine names to other genuine names are not included in these distributions.  
