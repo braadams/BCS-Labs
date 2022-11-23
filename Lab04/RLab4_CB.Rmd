@@ -123,8 +123,10 @@ Hint: There are a number of ways to measure the similarity of strings and that p
 
 ## 1
 ```{r}
-dist.matrix<-stringdistmatrix(my_df$birth_and_names,my_df$birth_and_names,method='lv',p=0.1)
-
+names(table(humanNames$Name)[table(humanNames$Name)>5]) -> correctNames
+correct_words <- correctNames[stringdist::amatch(humanNames$Name, correctNames, maxDist = Inf)]
+humanNames <- humanNames %>% transmute(Name=correct_words) 
+table(humanNames)
 ```
 
 2) For each of the genuine names identified in (1), produce a histogram showing the distribution of Damerau–Levenshtein distances from the genuine name to the classified data. Make sure distances from genuine names to other genuine names are not included in these distributions.  
