@@ -30,6 +30,11 @@
  ┃ ┣ 📄RLab3_IPS.Rmd
  ┃ ┣ 📄RLab3_IPS.html
  ┃ ┣ 📄accessPointLocations.txt
+ ┣ 📂Lab04
+ ┃ ┣ 📄humans-names.csv
+ ┃ ┣ 📄morley.dat
+ ┃ ┣ 📄RLab4_CB.html
+ ┃ ┗ 📄RLab4_CB.Rmd
  ┣ 📄.gitignore
  ┣ 📄Logo.png
  ┗ 📄README.md
